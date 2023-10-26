@@ -3,24 +3,23 @@ import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort
 import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
 
-type DataTableHeader = {
+type DataTableHeader<D> = {
     columns: ReactElement<DataTableColumnProps>[] | null,
-    data: Object,
+    data: D,
     sortField: string,
     sortOrder: SortMode,
     onSortChange: DataTableColumnSortHandler
 };
 
-function DataTableHeader(props: DataTableHeader) {
+function DataTableHeader<D extends Record<string, any>>(props: DataTableHeader<D>) {
 
     const createCell = (column: ReactElement<DataTableColumnProps>, index: number) => {
         const isColumnSorted = column.props.field === props.sortField;
-        const columnSortOrder = isColumnSorted ? props.sortOrder : SortMode.ASCENDING;
 
         const cellClickHandler = (e: MouseEvent) => {
             // Handle user onClick
             console.log(column.props.field);
-            
+
             // Sort by ascending by default, otherwise toggle
             let newSortOrder: SortMode;
             if (isColumnSorted) {

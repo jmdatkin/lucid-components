@@ -6,7 +6,7 @@ type DataTableColumnProps = {
     field: string
 };
 
-const DataTableColumn = () => {
+const DataTableColumn = (props: DataTableColumnProps) => {
 
     return ( 
         <div className="lucid-datatable-column">

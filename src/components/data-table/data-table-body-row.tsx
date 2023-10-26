@@ -2,16 +2,16 @@ import { MouseEventHandler, useRef } from "react";
 import { DataTableRowClickEvent } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
 
-type DataTableBodyRowProps = {
+type DataTableBodyRowProps<D> = {
     columns?: any,
     selected: boolean,
-    record: Object,
+    record: D,
     rowIndex: number,
     onCellClick?: Function,
     onRowClick?: Function
 };
 
-function DataTableBodyRow(props: DataTableBodyRowProps) {
+function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRowProps<D>) {
 
     const rowElementRef = useRef(null);
 

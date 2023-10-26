@@ -4,7 +4,7 @@ import DataTableBody from "./data-table-body";
 import './DataTable.scss';
 import DataTableHeader from "./data-table-header";
 import { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
-import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableData, DataTableRowClickHandler } from "../../types/data-table";
+import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableData, DataTableRowClickHandler, DataTableSelectionChangeHandler } from "../../types/data-table";
 import { localeComparator, resolveFieldData, sort } from "../../utils/util";
 
 enum SelectionMode {
@@ -12,25 +12,25 @@ enum SelectionMode {
     MULTIPLE
 };
 
-type DataTableProps = {
+type DataTableProps<D> = {
     children: ReactNode,
-    data: Object[],
-    dataKey: string,
-    selectionMode: SelectionMode,
-    onSelectionChange: Function,
-    onCellClick: DataTableCellClickHandler,
-    onRowClick: DataTableRowClickHandler
+    data: D[],
+    dataKey?: string,
+    selectionMode?: SelectionMode,
+    onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
+    onCellClick?: DataTableCellClickHandler<D>,
+    onRowClick?: DataTableRowClickHandler<D>
 };
 
 // TODO: Fix row index being preserved when sorting
 // TODO: Formalize data model, e.g. rowKey
 
-function DataTable(props: DataTableProps) {
+function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     const [sortField, setSortField] = useState<string | null>(null);
     const [sortOrder, setSortOrder] = useState<SortMode>(SortMode.ASCENDING);
 
-    const [finalData, setFinalData] = useState(props.data);
+    const [finalData, setFinalData] = useState<typeof props.data>(props.data);
 
     const onSortChange: DataTableColumnSortHandler = (column, order, e) => {
         setSortOrder(order);
@@ -49,7 +49,7 @@ function DataTable(props: DataTableProps) {
 
 
     // From https://github.com/primefaces/primereact/blob/master/components/lib/datatable/DataTable.js
-    const sortSingle = (data: DataTableData, field: string, order: SortMode) => {
+    const sortSingle = (data: typeof props.data, field: string, order: SortMode) => {
         let value = [...data];
 
         // if (columnSortable.current && columnSortFunction.current) {

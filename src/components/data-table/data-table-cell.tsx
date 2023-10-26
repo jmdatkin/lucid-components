@@ -1,15 +1,15 @@
 import { MouseEventHandler, ReactFragment, useRef } from "react";
 
-type DataTableCellProps = {
+type DataTableCellProps<D> = {
     value: any,
-    record: Record<string, any>,
+    record: D,
     rowIndex: number,
     cellIndex: number,
     onCellClick: Function,
     render?: Function
 }
 
-function DataTableCell(props: DataTableCellProps) {
+function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<D>) {
 
     const cellElementRef = useRef(null);
 

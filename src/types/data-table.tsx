@@ -2,28 +2,30 @@ import { MouseEvent, Ref } from "react";
 
 type DataTableData = Object[];
 
-type DataTableCellClickEvent = {
+type DataTableCellClickEvent<D> = {
     originalEvent: MouseEvent,
-    record: Record<string, any>,
+    record: D,
     rowIndex: number,
     cellIndex: number,
     element: HTMLTableCellElement
 }
 
-type DataTableCellClickHandler = (e: DataTableCellClickEvent) => void;
+type DataTableCellClickHandler<D> = (e: DataTableCellClickEvent<D>) => void;
 
-type DataTableRowClickEvent = {
+type DataTableRowClickEvent<D> = {
     originalEvent: MouseEvent,
-    record: Record<string, any>,
+    record: D,
     rowIndex: number,
     element: HTMLTableRowElement
 }
 
-type DataTableRowClickHandler = (e: DataTableRowClickEvent) => void;
+type DataTableRowClickHandler<D> = (e: DataTableRowClickEvent<D>) => void;
 
-type DataTableSelectionChangeEvent = {
-    selected: [],
+type DataTableSelectionChangeEvent<D> = {
+    selected: D,
 }
+
+type DataTableSelectionChangeHandler<D> = (e: DataTableSelectionChangeEvent<D>) => void;
 
 export type {
     DataTableData,
@@ -31,5 +33,6 @@ export type {
     DataTableCellClickHandler,
     DataTableRowClickEvent,
     DataTableRowClickHandler,
-    DataTableSelectionChangeEvent
+    DataTableSelectionChangeEvent,
+    DataTableSelectionChangeHandler
 };
