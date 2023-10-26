@@ -31,7 +31,6 @@ div.lucid-datatable table {
   thead {
     tr {
       td {
-
         @apply cursor-pointer;
 
         span {
@@ -40,5 +39,17 @@ div.lucid-datatable table {
         }
       }
     }
+  }
+
+  tbody {
+    tr {
+      @apply cursor-pointer;
+      @apply hover:bg-zinc-100;
+    }
+
+    tr.lucid-datatable-row-selected {
+      @apply bg-blue-200;
+    }
+
   }
 }

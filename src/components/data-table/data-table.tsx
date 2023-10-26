@@ -4,13 +4,26 @@ import DataTableBody from "./data-table-body";
 import './DataTable.scss';
 import DataTableHeader from "./data-table-header";
 import { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
-import { DataTableData } from "../../types/data-table";
+import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableData, DataTableRowClickHandler } from "../../types/data-table";
 import { localeComparator, resolveFieldData, sort } from "../../utils/util";
+
+enum SelectionMode {
+    SINGLE,
+    MULTIPLE
+};
 
 type DataTableProps = {
     children: ReactNode,
     data: Object[],
+    dataKey: string,
+    selectionMode: SelectionMode,
+    onSelectionChange: Function,
+    onCellClick: DataTableCellClickHandler,
+    onRowClick: DataTableRowClickHandler
 };
+
+// TODO: Fix row index being preserved when sorting
+// TODO: Formalize data model, e.g. rowKey
 
 function DataTable(props: DataTableProps) {
 
@@ -22,7 +35,6 @@ function DataTable(props: DataTableProps) {
     const onSortChange: DataTableColumnSortHandler = (column, order, e) => {
         setSortOrder(order);
         setSortField(column);
-        setFinalData(sortSingle(props.data, column, order));
     }
 
     const getColumns = () => {
@@ -34,6 +46,7 @@ function DataTable(props: DataTableProps) {
 
         return columns;
     };
+
 
     // From https://github.com/primefaces/primereact/blob/master/components/lib/datatable/DataTable.js
     const sortSingle = (data: DataTableData, field: string, order: SortMode) => {
@@ -71,25 +84,24 @@ function DataTable(props: DataTableProps) {
 
     const createContent = () => {
         return (
-            <DataTableBody data={finalData}>
-
-            </DataTableBody>
+            <DataTableBody
+                selectionMode={props.selectionMode}
+                onSelectionChange={props.onSelectionChange}
+                data={finalData}
+                onCellClick={props.onCellClick}
+                onRowClick={props.onRowClick}
+            />
         )
     }
 
-    const createColumns = () => {
-        return getColumns()?.map(column => {
-            return (<div></div>)
-        })
-    }
-
+    // Re-sort data when sort column/order changes
     useEffect(() => {
-
+        if (sortField !== null)
+            setFinalData(sortSingle(props.data, sortField, sortOrder));
     }, [sortField, sortOrder]);
 
     return (
         <div className="lucid-datatable">
-            {getColumns()}
             <table>
                 {createHeader()}
                 {createContent()}
@@ -97,5 +109,11 @@ function DataTable(props: DataTableProps) {
         </div>
     );
 }
+
+DataTable.defaultProps = {
+    selectionMode: SelectionMode.SINGLE
+};
+
+export { SelectionMode };
 
 export default DataTable;

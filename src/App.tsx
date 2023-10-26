@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.scss'
 import Button from './components/Button'
 import InputText from './components/InputText'
-import DataTable from './components/data-table/data-table'
+import DataTable, { SelectionMode } from './components/data-table/data-table'
 import DataTableColumn from './components/data-table/data-table-column'
 
 function App() {
@@ -12,6 +12,8 @@ function App() {
   const onChange: ChangeEventHandler<HTMLInputElement> = function (e) {
     console.log(e.target.value);
   }
+
+  const [selection, setSelection] = useState([])
 
   const data = useRef(
     [
@@ -161,13 +163,20 @@ function App() {
 
   return (
     <div className="App">
-      <DataTable data={data.current}>
+      <DataTable
+        data={data.current}
+        onSelectionChange={(e) => setSelection(e.selected)}
+        onCellClick={(e) => console.log(e)}
+        selectionMode={SelectionMode.SINGLE}
+
+        >
         <DataTableColumn header="Name" field="name" />
         <DataTableColumn header="Phone" field="phone" />
         <DataTableColumn header="E-mail" field="email" />
         <DataTableColumn header="Address" field="address" />
         <DataTableColumn header="Postal Code" field="postalZip" />
       </DataTable>
+      {selection ? JSON.stringify(selection) : ''}
     </div>
   )
 }

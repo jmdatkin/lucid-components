@@ -13,7 +13,7 @@ type DataTableHeader = {
 
 function DataTableHeader(props: DataTableHeader) {
 
-    const createCell = (column: ReactElement<DataTableColumnProps>) => {
+    const createCell = (column: ReactElement<DataTableColumnProps>, index: number) => {
         const isColumnSorted = column.props.field === props.sortField;
         const columnSortOrder = isColumnSorted ? props.sortOrder : SortMode.ASCENDING;
 
@@ -32,15 +32,15 @@ function DataTableHeader(props: DataTableHeader) {
             props.onSortChange(column.props.field, newSortOrder, e);
         }
 
-        const cell = <DataTableHeaderCell column={column} isSorted={isColumnSorted} order={props.sortOrder} onClick={cellClickHandler}></DataTableHeaderCell>
+        const cell = <DataTableHeaderCell key={index} column={column} isSorted={isColumnSorted} order={props.sortOrder} onClick={cellClickHandler}></DataTableHeaderCell>
 
         return cell;
     }
 
     const createCells = () => {
         return (
-            props.columns!.map((column, i) => {
-                return createCell(column);
+            props.columns!.map((column, idx) => {
+                return createCell(column, idx);
             })
         );
     }
