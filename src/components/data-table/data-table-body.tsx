@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableRowClickEvent, DataTableRowClickHandler, DataTableSelectionChangeHandler } from "../../types/data-table";
 import { SelectionMode } from "./data-table";
 import DataTableBodyRow from "./data-table-body-row";
-import { isEqual } from "lodash";
+import isEqual from "lodash/isEqual";
 
 type DataTableBodyProps<D> = {
     data: D[],
     selectionMode?: SelectionMode,
+    selection: D | D[],
     onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
     onRowClick?: DataTableRowClickHandler<D>
@@ -15,22 +16,18 @@ type DataTableBodyProps<D> = {
 
 function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<D>) {
 
-    const [selected, setSelected] = useState<D | D[]>([]);
+    // const [selected, setSelected] = useState<D | D[]>([]);
 
     // Call callback when internal selection array changed
-    useEffect(() => {
-        if (!props.onSelectionChange) return;
-        props.onSelectionChange({
-            selected
-        });
-    }, [selected])
+    // useEffect(() => {
+    // }, [selected])
 
     const isSelected = (rowData: D) => {
-        if (Array.isArray(selected)) {
+        if (Array.isArray(props.selection)) {
             // Row data is in selection array
-            return selected.findIndex((data) => isEqual(rowData, data)) > -1;
+            return props.selection.findIndex((data) => isEqual(rowData, data)) > -1;
         } else {
-            return isEqual(rowData, selected);
+            return isEqual(rowData, props.selection);
         }
     }
 
@@ -39,16 +36,24 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
         const isRowSelected = isSelected(e.record);
         if (!isRowSelected) {
             // Internal selection behavior
-            setSelected((prev) => {
-                if (props.selectionMode === SelectionMode.SINGLE) {
-                    return e.record;
-                }
-                else if (props.selectionMode === SelectionMode.MULTIPLE) {
-                    return [...(prev as D[]), e.record];
-                }
-                else
-                    throw new Error("Selection mode not properly defined.");
+            let newSelection;
+            // setSelected((prev) => {
+            if (props.selectionMode === SelectionMode.SINGLE) {
+                newSelection = e.record;
+                // return e.record;
+            }
+            else if (props.selectionMode === SelectionMode.MULTIPLE) {
+                newSelection = [...(props.selection as D[]), e.record]
+                // return [...(prev as D[]), e.record];
+            }
+            else
+                throw new Error("Selection mode not properly defined.");
+
+            if (!props.onSelectionChange) return;
+            props.onSelectionChange({
+                selection: newSelection
             });
+
         }
 
         // Row click callback passed down through props

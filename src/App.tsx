@@ -21,12 +21,16 @@ function App() {
 
   return (
     <div className="App">
-      Selected: {(selection as typeof data.current[number]).name}
+      <Button onClick={() => setSelection([])} label="Clear Selection"></Button>
+      Selected: {
+      (Array.isArray(selection) ? selection.map((s,i) => s.name + (i < selection.length - 1 ? ', ' : '')) : selection.name)
+      }
       <DataTable
         data={data.current}
-        onSelectionChange={(e) => setSelection(e.selected)}
+        selection={selection}
+        onSelectionChange={(e) => setSelection(e.selection)}
         onCellClick={(e) => console.log(e)}
-        selectionMode={SelectionMode.SINGLE}
+        selectionMode={SelectionMode.MULTIPLE}
 
       >
         <DataTableColumn header="Name" field="name" />

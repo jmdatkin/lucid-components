@@ -16,6 +16,7 @@ type DataTableProps<D> = {
     children: ReactNode,
     data: D[],
     dataKey?: string,
+    selection: D | D[],
     selectionMode?: SelectionMode,
     onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
@@ -84,6 +85,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         return (
             <DataTableBody
                 selectionMode={props.selectionMode}
+                selection={props.selection}
                 onSelectionChange={props.onSelectionChange}
                 data={finalData}
                 onCellClick={props.onCellClick}

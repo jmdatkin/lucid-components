@@ -1,5 +1,5 @@
 import { SortMode } from "../components/data-table/sort-order-indicator";
-import lodash from "lodash";
+import isEqual from "lodash/isEqual";
 
 // From https://github.com/primefaces/primereact/blob/master/components/lib/utils/ObjectUtils.js#L409
 const localeComparator = (locale: string | string[]) => {
@@ -12,7 +12,7 @@ const isEmpty = (value: any) => {
 }
 
 const equals = (obj1: any, obj2: any) => {
-    return lodash.isEqual(obj1,  obj2);
+    return isEqual(obj1,  obj2);
 };
 
 

@@ -22,7 +22,7 @@ type DataTableRowClickEvent<D> = {
 type DataTableRowClickHandler<D> = (e: DataTableRowClickEvent<D>) => void;
 
 type DataTableSelectionChangeEvent<D> = {
-    selected: D,
+    selection: D,
 }
 
 type DataTableSelectionChangeHandler<D> = (e: DataTableSelectionChangeEvent<D>) => void;
