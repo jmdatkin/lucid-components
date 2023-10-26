@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import DataTableBody from "./data-table-body";
 
 import './DataTable.scss';
@@ -38,7 +38,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     }
 
     const getColumns = () => {
-        const columns = React.Children.toArray(props.children);
+        const columns = React.Children.toArray(props.children) as ReactElement[];
 
         if (!columns) {
             return null;
@@ -76,9 +76,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     const createHeader = () => {
         return (
-            <DataTableHeader onSortChange={onSortChange} sortField={sortField} sortOrder={sortOrder} columns={getColumns()} data={props.data}>
-
-            </DataTableHeader>
+            <DataTableHeader onSortChange={onSortChange} sortField={sortField} sortOrder={sortOrder} columns={getColumns()} data={props.data} />
         )
     }
 

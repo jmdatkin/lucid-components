@@ -6,8 +6,8 @@ import { isEqual } from "lodash";
 
 type DataTableBodyProps<D> = {
     data: D[],
-    selectionMode: SelectionMode,
-    onSelectionChange: DataTableSelectionChangeHandler<D | D[]>,
+    selectionMode?: SelectionMode,
+    onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
     onRowClick?: DataTableRowClickHandler<D>
 }

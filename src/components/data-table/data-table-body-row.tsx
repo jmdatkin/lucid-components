@@ -1,5 +1,5 @@
 import { MouseEventHandler, useRef } from "react";
-import { DataTableRowClickEvent } from "../../types/data-table";
+import { DataTableCellClickHandler, DataTableRowClickHandler } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
 
 type DataTableBodyRowProps<D> = {
@@ -7,8 +7,8 @@ type DataTableBodyRowProps<D> = {
     selected: boolean,
     record: D,
     rowIndex: number,
-    onCellClick?: Function,
-    onRowClick?: Function
+    onCellClick?: DataTableCellClickHandler<D>,
+    onRowClick?: DataTableRowClickHandler<D>
 };
 
 function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRowProps<D>) {
@@ -19,7 +19,7 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
         if (!props.onRowClick) return;
         props.onRowClick({
             originalEvent: e,
-            element: e.currentTarget,
+            element: e.currentTarget as HTMLTableRowElement,
             record: props.record,
             rowIndex: props.rowIndex
         });

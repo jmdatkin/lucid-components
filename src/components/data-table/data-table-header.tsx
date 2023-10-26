@@ -1,12 +1,12 @@
-import { MouseEvent, ReactElement, ReactNode } from "react";
+import { MouseEvent, MouseEventHandler, ReactElement, ReactNode } from "react";
 import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
 import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
 
 type DataTableHeader<D> = {
-    columns: ReactElement<DataTableColumnProps>[] | null,
+    columns: ReactElement[] | null,
     data: D,
-    sortField: string,
+    sortField: string | null,
     sortOrder: SortMode,
     onSortChange: DataTableColumnSortHandler
 };
@@ -16,7 +16,7 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeader<D
     const createCell = (column: ReactElement<DataTableColumnProps>, index: number) => {
         const isColumnSorted = column.props.field === props.sortField;
 
-        const cellClickHandler = (e: MouseEvent) => {
+        const cellClickHandler: MouseEventHandler = (e) => {
             // Handle user onClick
             console.log(column.props.field);
 

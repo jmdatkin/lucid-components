@@ -1,10 +1,10 @@
-import { MouseEvent, ReactElement } from "react"
+import { MouseEvent, MouseEventHandler, ReactElement } from "react"
 import SortOrderIndicator, { SortMode } from "./sort-order-indicator"
 
 
 type DataTableHeaderCellProps = {
     column: ReactElement,
-    onClick: MouseEvent,
+    onClick: MouseEventHandler,
     order: SortMode,
     isSorted: boolean
 }

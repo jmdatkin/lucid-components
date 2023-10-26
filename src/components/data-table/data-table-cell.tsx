@@ -1,11 +1,12 @@
-import { MouseEventHandler, ReactFragment, useRef } from "react";
+import { MouseEventHandler, useRef } from "react";
+import { DataTableCellClickHandler } from "../../types/data-table";
 
 type DataTableCellProps<D> = {
     value: any,
     record: D,
     rowIndex: number,
     cellIndex: number,
-    onCellClick: Function,
+    onCellClick?: DataTableCellClickHandler<D>,
     render?: Function
 }
 
@@ -14,13 +15,14 @@ function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<
     const cellElementRef = useRef(null);
 
     const onClick: MouseEventHandler<HTMLTableCellElement> = (e) => {
+        if (!props.onCellClick) return;
         props.onCellClick(
             {
                 originalEvent: e,
                 record: props.record,
                 rowIndex: props.rowIndex,
                 cellIndex: props.cellIndex,
-                element: cellElementRef.current
+                element: e.currentTarget as HTMLTableCellElement
             });
     };
 
