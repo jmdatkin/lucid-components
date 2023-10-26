@@ -1,0 +1,21 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+
+div.samples {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+}
+
+div.samples > div {
+  min-width: 12rem;
+  min-height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

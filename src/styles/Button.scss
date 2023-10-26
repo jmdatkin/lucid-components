@@ -1,0 +1,53 @@
+@tailwind base;
+
+@import "./variables";
+
+@layer base {
+    button.fc-button {
+        @apply bg-slate-50;
+        @apply hover:bg-slate-200;
+        @apply focus:bg-slate-200;
+        @apply active:bg-slate-300;
+        @apply text-slate-900;
+        @apply border border-slate-400;
+        @apply p-4 py-2;
+        @apply cursor-pointer;
+
+        @apply select-none;
+
+        @apply focus-visible:ring;
+        @apply focus-visible:outline-none;
+    }
+
+    button.fc-button.btn-lg {
+        @apply text-lg;
+        @apply p-5 py-3;
+    }
+
+    button.fc-button.btn-primary {
+        @apply bg-blue-500;
+        @apply hover:bg-blue-600;
+        @apply active:bg-blue-700;
+        @apply text-blue-50;
+    }
+
+    button.fc-button.btn-secondary {
+        @apply bg-blue-500;
+        @apply hover:bg-blue-600;
+        @apply active:bg-blue-700;
+        @apply text-blue-50;
+    }
+
+    button.fc-button.btn-alert {
+        @apply bg-yellow-500;
+        @apply hover:bg-yellow-600;
+        @apply active:bg-yellow-700;
+        @apply text-yellow-50;
+    }
+
+    button.fc-button.btn-outlined {
+        @apply bg-transparent;
+        @apply hover:bg-slate-50;
+        @apply active:bg-slate-100;
+    }
+}
