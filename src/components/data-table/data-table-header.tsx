@@ -3,10 +3,15 @@ import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort
 import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
 import { SelectionMode } from "./data-table";
+import DataTableCheckboxHeaderCell from "./data-table-checkbox-header-cell";
+import { DataTableSelectionChangeHandler } from "../../types/data-table";
 
 type DataTableHeaderProps<D> = {
-    columns?: ReactElement<DataTableColumnProps>[],
+    originalData: D[],yy
     data: D[],
+    columns?: ReactElement<DataTableColumnProps>[],
+    selection: D[],
+    onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     sortField: string | null,
     sortOrder: SortMode,
     selectionMode?: SelectionMode,
@@ -33,21 +38,37 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
             }
         }
 
+        const checkboxCellClickHandler: MouseEventHandler = (e) => {
+            if (props.selectionMode === SelectionMode.CHECKBOX || props.selectionMode === SelectionMode.MULTIPLE) {
+                if (props.onSelectionChange) {
+
+                    // If all records selected, deselect all
+                    if (props.selection.length === props.originalData.length)
+                        props.onSelectionChange({ selection: [] });
+
+                    else
+                        props.onSelectionChange({ selection: props.originalData });
+                }
+            }
+        }
+
         let cell;
 
-        if (column.props.selectionColumn) {
-            if (props.selectionMode === SelectionMode.CHECKBOX) {
-                cell = <DataTableHeaderCell
-                    key={index}
-                    column={column}
-                    isSorted={isColumnSorted}
-                    order={props.sortOrder}
-                    onClick={cellClickHandler}
-                    style={column.props.style}
-                />
-            } else {
-                cell = <></>
-            }
+        if (column.props.selectionColumn && props.selectionMode !== SelectionMode.SINGLE) {
+            // if (props.selectionMode === SelectionMode.CHECKBOX) {
+
+            const allSelected = props.selection.length === props.originalData.length;
+
+            cell = <DataTableCheckboxHeaderCell
+                checked={allSelected}
+                key={index}
+                column={column}
+                onClick={checkboxCellClickHandler}
+                style={column.props.style}
+            />
+            // } else {
+            //     cell = <></>
+            // }
         } else {
             cell = <DataTableHeaderCell
                 key={index}

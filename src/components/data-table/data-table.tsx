@@ -94,12 +94,15 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     const createHeader = () => {
         return (
             <DataTableHeader
+                originalData={props.data}
+                data={data_final}
+                columns={getColumns()}
+                selection={props.selection}
+                selectionMode={props.selectionMode}
+                onSelectionChange={props.onSelectionChange}
                 onSortChange={onSortChange}
                 sortField={sortField}
                 sortOrder={sortOrder}
-                columns={getColumns()}
-                selectionMode={props.selectionMode}
-                data={props.data}
             />
         )
     }
@@ -107,11 +110,12 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     const createContent = () => {
         return (
             <DataTableBody
+                originalData={props.data}
+                data={data_final}
                 columns={getColumns()}
                 selectionMode={props.selectionMode}
                 selection={props.selection}
                 onSelectionChange={props.onSelectionChange}
-                data={data_final}
                 onCellClick={props.onCellClick}
                 onRowClick={props.onRowClick}
             />

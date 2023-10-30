@@ -66,7 +66,7 @@ function App() {
         selection={selection}
         onSelectionChange={(e) => setSelection(e.selection)}
         onCellClick={(e) => console.log(e)}
-        selectionMode={SelectionMode.CHECKBOX}
+        selectionMode={SelectionMode.MULTIPLE}
       >
         <DataTableColumn selectionColumn style={{minWidth: '3rem'}}/>
         <DataTableColumn header="Name" field="name" style={{minWidth: '16rem'}}/>

@@ -6,6 +6,7 @@ import isEqual from "lodash/isEqual";
 import { DataTableColumnProps } from "./data-table-column";
 
 type DataTableBodyProps<D> = {
+    originalData: D[],
     data: D[],
     columns?: ReactElement<DataTableColumnProps>[],
     selectionMode?: SelectionMode,

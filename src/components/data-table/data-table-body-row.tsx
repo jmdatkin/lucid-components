@@ -1,14 +1,14 @@
 import { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
 import { DataTableCellClickHandler, DataTableRowClickHandler } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
-import { getColumnByField } from "../../utils/util";
+import { columnRefersToField, getColumnByField } from "../../utils/util";
 import { DataTableColumnProps } from "./data-table-column";
 import DataTableCheckboxCell from "./data-table-checkbox-cell";
 import { SelectionMode } from "./data-table";
 
 type DataTableBodyRowProps<D> = {
     style?: CSSProperties,
-    columns?: ReactElement<DataTableColumnProps>[],
+    columns: ReactElement<DataTableColumnProps>[],
     selected: boolean,
     selectionMode: SelectionMode,
     record: D,
@@ -53,7 +53,8 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
                         onCellClick={props.onCellClick}
                     ></DataTableCell>
                 )
-            } else if (column.props.selectionColumn && props.selectionMode === SelectionMode.CHECKBOX) {
+
+            } else if (column.props.selectionColumn) {
 
                 const cellStyle = column?.props.style;
                 const cellRenderFxn = column?.props.renderContent;
