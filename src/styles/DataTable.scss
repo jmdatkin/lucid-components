@@ -7,9 +7,10 @@
 
 .lucid-datatable td {
     // border: solid 1px black;
-    @apply border border-zinc-400;
+    @apply border border-zinc-300;
 }
 
 .lucid-datatable-footer {
     @apply flex items-center justify-around;
+    @apply py-2;
 }

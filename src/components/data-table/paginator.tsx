@@ -16,7 +16,7 @@ type PaginatorProps = {
 const Paginator = (props: PaginatorProps) => {
 
     const firstIconButton = () => {
-        const disabled = props.currentPage === 0;
+        const disabled = props.numPages === 0 || props.currentPage === 0;
 
         return (
             <IconButton disabled={disabled} onClick={props.goFirstPage}>
@@ -27,7 +27,7 @@ const Paginator = (props: PaginatorProps) => {
     };
 
     const lastIconButton = () => {
-        const disabled = props.currentPage === props.numPages - 1;
+        const disabled = props.numPages === 0 || props.currentPage === props.numPages - 1;
 
         return (
             <IconButton disabled={disabled} onClick={props.goLastPage}>
@@ -38,7 +38,7 @@ const Paginator = (props: PaginatorProps) => {
 
     const prevIconButton = () => {
 
-        const disabled = props.currentPage === 0;
+        const disabled = props.numPages === 0 || props.currentPage === 0;
 
         return (
             <IconButton disabled={disabled} onClick={props.onPrevPage}>
@@ -49,7 +49,7 @@ const Paginator = (props: PaginatorProps) => {
 
     const nextIconButton = () => {
 
-        const disabled = props.currentPage === props.numPages - 1;
+        const disabled = props.numPages === 0 || props.currentPage === props.numPages - 1;
 
         return (
             <IconButton disabled={disabled} onClick={props.onNextPage}>

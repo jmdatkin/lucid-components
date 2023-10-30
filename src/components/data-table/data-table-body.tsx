@@ -10,6 +10,7 @@ type DataTableBodyProps<D> = {
     columns?: ReactElement<DataTableColumnProps>[],
     selectionMode?: SelectionMode,
     selection: D[],
+    sortField: string,
     onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
     onRowClick?: DataTableRowClickHandler<D>
@@ -116,20 +117,27 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
     }
 
     const createContent = () => {
-        return props.data.map((record, idx) => {
-            return (
-                <DataTableBodyRow
-                    columns={props.columns}
-                    selected={isSelected(record)}
-                    selectionMode={props.selectionMode}
-                    onRowClick={onRowClick}
-                    onCellClick={onCellClick}
-                    rowIndex={idx}
-                    key={idx}
-                    record={record}
-                />
-            )
-        })
+        if (props.data.length === 0) {
+            return <tr>
+                <td colSpan={props.columns?.length}>No records found!</td>
+            </tr>
+        } else {
+            return props.data.map((record, idx) => {
+                return (
+                    <DataTableBodyRow
+                        columns={props.columns}
+                        selected={isSelected(record)}
+                        selectionMode={props.selectionMode}
+                        sortField={props.sortField}
+                        onRowClick={onRowClick}
+                        onCellClick={onCellClick}
+                        rowIndex={idx}
+                        key={idx}
+                        record={record}
+                    />
+                )
+            });
+        }
     }
 
     return (

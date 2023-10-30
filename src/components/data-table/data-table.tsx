@@ -27,7 +27,8 @@ type DataTableProps<D> = {
     selectionMode?: SelectionMode,
     onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
-    onRowClick?: DataTableRowClickHandler<D>
+    onRowClick?: DataTableRowClickHandler<D>,
+    render_controls?: Function,
 };
 
 
@@ -127,6 +128,9 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     }
 
     const createContent = () => {
+        // if (data_final.length === 0) {
+        //     return <span>No records found!</span>;
+        // }
         return (
             <DataTableBody
                 originalData={props.data}
@@ -134,6 +138,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                 columns={getColumns()}
                 selectionMode={props.selectionMode}
                 selection={props.selection}
+                sortField={sortField} 
                 onSelectionChange={props.onSelectionChange}
                 onCellClick={props.onCellClick}
                 onRowClick={props.onRowClick}
@@ -169,7 +174,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                 <DataTableControls
                     renderStart={() => {
                         return (
-                            <></>
+                            props.render_controls ? props.render_controls() : <></>
                         )
                     }}
                     renderEnd={() => {

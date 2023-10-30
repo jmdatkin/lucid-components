@@ -10,6 +10,7 @@ type DataTableBodyRowProps<D> = {
     columns: ReactElement<DataTableColumnProps>[],
     selected: boolean,
     selectionMode: SelectionMode,
+    sortField: string,
     record: D,
     rowIndex: number,
     onCellClick?: DataTableCellClickHandler<D>,
@@ -43,6 +44,7 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
                     <DataTableCell
                         selected={props.selected}
                         column={column}
+                        sortField={props.sortField}
                         style={cellStyle}
                         renderContent={cellRenderFxn}
                         record={props.record}

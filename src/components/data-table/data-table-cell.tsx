@@ -8,6 +8,7 @@ type DataTableCellProps<D> = {
     column: ReactElement<DataTableColumnProps>,
     renderContent?: (rowData: D) => JSX.Element,
     value: any,
+    sortField: string,
     record: D,
     rowIndex: number,
     cellIndex: number,
@@ -33,7 +34,7 @@ function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<
 
     return (
 
-        <td onClick={onClick} ref={cellElementRef} className="lucid-datatable-cell" style={props.style}>
+        <td onClick={onClick} ref={cellElementRef} className={`lucid-datatable-cell ${props.column.props.field === props.sortField ? 'lucid-datatable-cell-sorted' : ''} ${props.selected ? 'lucid-datatable-cell-selected' : ''}`} style={props.style}>
             {props.renderContent ? props.renderContent(props.record) : props.value}
         </td>
     );

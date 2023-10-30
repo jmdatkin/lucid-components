@@ -15,7 +15,6 @@ body {
   min-width: 320px;
   min-height: 100vh;
   @apply text-zinc-900;
-  
 }
 
 h1 {
@@ -25,6 +24,11 @@ h1 {
 
 @layer lucid-components;
 div.lucid-datatable {
+  @apply shadow-lg;
+
+  * {
+    @apply transition duration-[0.05s];
+  }
   @apply border border-zinc-400;
 
   div.lucid-datatable-controls {
@@ -37,24 +41,26 @@ div.lucid-datatable {
 
     tr {
       td {
-        @apply p-3;
+        @apply p-4;
         // @apply border-zinc-600;
       }
       td {
         @apply border-l-0;
       }
-      td{
+      td {
         @apply border-r-0;
       }
     }
 
     thead {
+      @apply border-b border-zinc-400;
+
       tr {
         @apply bg-zinc-200;
 
         th {
           @apply cursor-pointer;
-          @apply p-3;
+          @apply p-4;
           // @apply border border-zinc-600;
           @apply text-center;
 
@@ -77,10 +83,22 @@ div.lucid-datatable {
       tr {
         @apply cursor-pointer;
         @apply hover:bg-zinc-100;
+
+        // td.lucid-datatable-cell-sorted {
+        //   @apply bg-zinc-200;
+        //   @apply border-r border-l;
+        //   @apply border-zinc-300;
+        // }
+      }
+
+      tr:first-of-type {
+        td {
+          @apply border-t-0;
+        }
       }
 
       tr:nth-child(2n + 1) {
-        // @apply bg--50;
+        // @apply bg-zinc-50;
       }
 
       tr.lucid-datatable-row-selected {
