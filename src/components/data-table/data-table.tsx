@@ -47,8 +47,17 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     const [data_sorted, setData_sorted] = useState<typeof props.data>(props.data);
     const [data_filtered, setData_filtered] = useState<typeof props.data>(props.data);
-    
-    const { pageData: data_page, goNextPage, goPrevPage, currentPage, setPage, numPages } = usePaginate(data_filtered, props.rows!);
+
+    const {
+        pageData: data_page,
+        goNextPage,
+        goPrevPage,
+        goFirstPage,
+        goLastPage,
+        currentPage,
+        setPage,
+        numPages
+    } = usePaginate(data_filtered, props.rows!);
 
     const [data_final, setData_final] = useState<typeof props.data>(props.data);
 
@@ -94,11 +103,18 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         return value;
     };
 
+    const createPaginatorDescription = () => {
+        if (data_page.length === 0)
+            return "0 to 0 of 0";
+        else
+            return `${currentPage * props.rows! + 1} to ${currentPage * props.rows! + data_page.length} of ${data_filtered.length}`;
+    };
+
     const createHeader = () => {
         return (
             <DataTableHeader
                 originalData={props.data}
-                data={data_page}
+                data={data_final}
                 columns={getColumns()}
                 selection={props.selection}
                 selectionMode={props.selectionMode}
@@ -114,7 +130,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         return (
             <DataTableBody
                 originalData={props.data}
-                data={data_page}
+                data={data_final}
                 columns={getColumns()}
                 selectionMode={props.selectionMode}
                 selection={props.selection}
@@ -168,13 +184,20 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                     </table>
                 </div>
                 <DataTableFooter>
-                    <Paginator
-                        numPages={numPages.current}
-                        currentPage={currentPage}
-                        onPrevPage={goPrevPage}
-                        onNextPage={goNextPage}
-                        setPage={setPage}
-                    ></Paginator>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                        <Paginator
+                            numPages={numPages.current}
+                            currentPage={currentPage}
+                            onPrevPage={goPrevPage}
+                            onNextPage={goNextPage}
+                            goFirstPage={goFirstPage}
+                            goLastPage={goLastPage}
+                            setPage={setPage}
+                        ></Paginator>
+                        <span className="lucid-datatable-page-description" style={{ textAlign: "center" }}>
+                            {createPaginatorDescription()}
+                        </span>
+                    </div>
                 </DataTableFooter>
             </div>
         </>

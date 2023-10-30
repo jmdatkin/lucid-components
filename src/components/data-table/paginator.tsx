@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import '../../styles/Paginator.scss'
-import Button from '../Button';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { BsChevronDoubleLeft, BsChevronDoubleRight, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import IconButton from '../icon-button';
 
 type PaginatorProps = {
     onPrevPage: Function,
     onNextPage: Function,
+    goFirstPage: Function,
+    goLastPage: Function,
     setPage: Function,
     numPages: number,
     currentPage: number
@@ -13,44 +15,69 @@ type PaginatorProps = {
 
 const Paginator = (props: PaginatorProps) => {
 
-    const prevButton = () => {
-        
+    const firstIconButton = () => {
         const disabled = props.currentPage === 0;
 
         return (
-            <Button disabled={disabled} onClick={props.onPrevPage}>
-                <BsChevronLeft></BsChevronLeft>
-            </Button>
+            <IconButton disabled={disabled} onClick={props.goFirstPage}>
+                <BsChevronDoubleLeft>
+                </BsChevronDoubleLeft>
+            </IconButton>
+        );
+    };
+
+    const lastIconButton = () => {
+        const disabled = props.currentPage === props.numPages - 1;
+
+        return (
+            <IconButton disabled={disabled} onClick={props.goLastPage}>
+                <BsChevronDoubleRight></BsChevronDoubleRight>
+            </IconButton>
         );
     }
 
-    const nextButton = () => {
+    const prevIconButton = () => {
+
+        const disabled = props.currentPage === 0;
+
+        return (
+            <IconButton disabled={disabled} onClick={props.onPrevPage}>
+                <BsChevronLeft></BsChevronLeft>
+            </IconButton>
+        );
+    }
+
+    const nextIconButton = () => {
 
         const disabled = props.currentPage === props.numPages - 1;
 
         return (
-            <Button disabled={disabled} onClick={props.onNextPage}>
+            <IconButton disabled={disabled} onClick={props.onNextPage}>
                 <BsChevronRight></BsChevronRight>
-            </Button>
+            </IconButton>
         );
 
     }
 
-    const createButtons = () => {
+    const createIconButtons = () => {
         return [...Array(props.numPages).keys()].map((page) => {
-            return <Button label={(page + 1).toString()}
+            return <IconButton
                 key={page}
-                className={props.currentPage === page ? 'bg-blue-500 text-white' : ''}
+                className={props.currentPage === page ? '!bg-sky-100' : ''}
                 onClick={() => props.setPage(page)}
-            ></Button>
+            >
+                {(page + 1).toString()}
+            </IconButton>
         });
     }
 
     return (
         <div className="lucid-datatable-paginator">
-            {prevButton()}
-            {createButtons()}
-            {nextButton()}
+            {firstIconButton()}
+            {prevIconButton()}
+            {createIconButtons()}
+            {nextIconButton()}
+            {lastIconButton()}
         </div>
     )
 

@@ -25,7 +25,7 @@ h1 {
 
 @layer lucid-components;
 div.lucid-datatable {
-  @apply border border-slate-600;
+  @apply border border-zinc-400;
 
   div.lucid-datatable-controls {
     @apply bg-zinc-200;
@@ -33,7 +33,7 @@ div.lucid-datatable {
 
   table {
     @apply border-l-0 border-r-0;
-    @apply border-slate-600;
+    @apply border-zinc-400;
 
     tr {
       td {
@@ -80,7 +80,7 @@ div.lucid-datatable {
       }
 
       tr:nth-child(2n + 1) {
-        @apply bg-blue-50;
+        // @apply bg--50;
       }
 
       tr.lucid-datatable-row-selected {
@@ -88,4 +88,8 @@ div.lucid-datatable {
       }
     }
   }
+}
+
+.lucid-datatable-page-description {
+  @apply text-zinc-500;
 }

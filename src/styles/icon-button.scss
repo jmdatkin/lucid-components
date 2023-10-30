@@ -1,0 +1,12 @@
+@layer lucid-components;
+
+button.lucid-icon-button {
+    @apply outline-none;
+    @apply border-none;
+    @apply rounded-full;
+    @apply w-[40px] h-[40px];
+    @apply hover:bg-zinc-200 active:bg-zinc-300;
+    @apply disabled:text-zinc-400 disabled:hover:bg-transparent;
+    @apply flex items-center justify-around;
+    @apply transition duration-75;
+}

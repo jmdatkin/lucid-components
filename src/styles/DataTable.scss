@@ -1,11 +1,13 @@
 @layer lucid-components;
 
 .lucid-datatable table {
-    border: solid 1px black;
+    // border: solid 1px black;
+    @apply border border-zinc-400;
 }
 
 .lucid-datatable td {
-    border: solid 1px black;
+    // border: solid 1px black;
+    @apply border border-zinc-400;
 }
 
 .lucid-datatable-footer {
