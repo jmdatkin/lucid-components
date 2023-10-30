@@ -5,12 +5,26 @@ interface Filter {
     matchMode: FilterMatchMode
 }
 
-type FilterValue = string | Date;
+type FilterValue = string & Date;
 
 enum FilterMatchMode {
     CONTAINS,
     STARTS_WITH,
-}
+    NOT_CONTAINS,
+    ENDS_WITH,
+    EQUALS,
+    NOT_EQUALS,
+    IN,
+    BETWEEN,
+    LESS_THAN,
+    LESS_THAN_EQUAL_TO,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL_TO,
+    DATE_IS,
+    DATE_IS_NOT,
+    DATE_BEFORE,
+    DATE_AFTER
+};
 
 const applyFilter = (data: any[], filterValue: FilterValue, filter: Filter[]) => {
     return data.filter((record) => {
@@ -20,8 +34,9 @@ const applyFilter = (data: any[], filterValue: FilterValue, filter: Filter[]) =>
             let match = false;
             filter.forEach((_filter) => {
                 const comparedField = resolveFieldData(record, _filter.field);
-                if (FILTER_MAP[_filter.matchMode](comparedField, filterValue as string))
-                    match = true;
+                const result = FILTER_MAP[_filter.matchMode](comparedField, filterValue) ?? false;
+                match ||= result;
+                // Apply OR operation to every filter
             });
             return match;
         }
@@ -273,7 +288,21 @@ const dateAfter = (value: Date, filter: Date) => {
 
 const FILTER_MAP = {
     [FilterMatchMode.STARTS_WITH]: startsWith,
-    [FilterMatchMode.CONTAINS]: contains
+    [FilterMatchMode.CONTAINS]: contains,
+    [FilterMatchMode.NOT_CONTAINS]: notContains,
+    [FilterMatchMode.ENDS_WITH]: endsWith,
+    [FilterMatchMode.EQUALS]: equals,
+    [FilterMatchMode.NOT_EQUALS]: notEquals,
+    [FilterMatchMode.IN]: _in,
+    [FilterMatchMode.BETWEEN]: between,
+    [FilterMatchMode.LESS_THAN]: lt,
+    [FilterMatchMode.LESS_THAN_EQUAL_TO]: lte,
+    [FilterMatchMode.GREATER_THAN]: gt,
+    [FilterMatchMode.GREATER_THAN_EQUAL_TO]: gte,
+    [FilterMatchMode.DATE_IS]: dateIs,
+    [FilterMatchMode.DATE_IS_NOT]: dateIsNot,
+    [FilterMatchMode.DATE_BEFORE]: dateBefore,
+    [FilterMatchMode.DATE_AFTER]: dateAfter,
 };
 
 export {

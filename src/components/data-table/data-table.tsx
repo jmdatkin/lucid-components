@@ -14,7 +14,8 @@ import DataTableHeader from "./data-table-header";
 
 enum SelectionMode {
     SINGLE,
-    MULTIPLE
+    MULTIPLE,
+    CHECKBOX,
 };
 
 type DataTableProps<D> = {
@@ -86,7 +87,6 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
             return sort(value1, value2, order, comparator);
         });
-        // }
 
         return value;
     };
@@ -118,13 +118,14 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     }
 
     // Re-sort data when sort column/order changes
+    // Sort 1st
     useEffect(() => {
-        let newFinalData = [...props.data];
         if (sortField !== null)
             setData_sorted(sortSingle(props.data, sortField, sortOrder));
     }, [sortField, sortOrder, props.data]);
 
     // Re-filter data when sort or filter input changes
+    // Filter 2nd
     useEffect(() => {
         if (props.filters && filterInput !== '') {
             setData_filtered(applyFilter(data_sorted, filterInput, props.filters))
