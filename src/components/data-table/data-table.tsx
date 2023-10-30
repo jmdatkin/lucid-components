@@ -45,7 +45,9 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     // const [filters, setFilters] = useState<FilterMatchMode>()
     const [filterInput, setFilterInput] = useState('');
 
-    const [finalData, setFinalData] = useState<typeof props.data>(props.data);
+    const [data_sorted, setData_sorted] = useState<typeof props.data>(props.data);
+    const [data_filtered, setData_filtered] = useState<typeof props.data >(props.data);
+    const [data_final, setData_final] = useState<typeof props.data>(props.data);
 
     const onSortChange: DataTableColumnSortHandler = (column, order, e) => {
         setSortOrder(order);
@@ -108,7 +110,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                 selectionMode={props.selectionMode}
                 selection={props.selection}
                 onSelectionChange={props.onSelectionChange}
-                data={finalData}
+                data={data_final}
                 onCellClick={props.onCellClick}
                 onRowClick={props.onRowClick}
             />
@@ -119,19 +121,24 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     useEffect(() => {
         let newFinalData = [...props.data];
         if (sortField !== null)
-            newFinalData = sortSingle(newFinalData, sortField, sortOrder);
+            setData_sorted(sortSingle(props.data, sortField, sortOrder));
+    }, [sortField, sortOrder, props.data]);
 
+    // Re-filter data when sort or filter input changes
+    useEffect(() => {
         if (props.filters && filterInput !== '') {
-            newFinalData = applyFilter(newFinalData, filterInput, props.filters)
-        }
+            setData_filtered(applyFilter(data_sorted, filterInput, props.filters))
+        } else if (filterInput === '')
+            setData_filtered(data_sorted!);
+    }, [data_sorted, filterInput])
 
-        setFinalData(newFinalData);
-
-    }, [sortField, sortOrder, props.filters, filterInput, props.data]);
+    useEffect(() => {
+        setData_final(data_filtered);
+    }, [data_filtered])
 
     return (
         <>
-            <div className="lucid-datatable" style={{width: props.width}}>
+            <div className="lucid-datatable" style={{ width: props.width }}>
                 <DataTableControls
                     renderStart={() => {
                         return (
