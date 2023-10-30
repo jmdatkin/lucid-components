@@ -1,7 +1,11 @@
 import { MouseEvent, ReactElement, Ref } from "react";
 import { DataTableColumnProps } from "../components/data-table/data-table-column";
 
-type DataTableData = Object[];
+enum SelectionMode {
+    SINGLE,
+    MULTIPLE,
+    CHECKBOX,
+};
 
 type DataTableCellClickEvent<D> = {
     originalEvent: MouseEvent,
@@ -29,8 +33,11 @@ type DataTableSelectionChangeEvent<D> = {
 
 type DataTableSelectionChangeHandler<D> = (e: DataTableSelectionChangeEvent<D>) => void;
 
+export {
+    SelectionMode
+}
+
 export type {
-    DataTableData,
     DataTableCellClickEvent,
     DataTableCellClickHandler,
     DataTableRowClickEvent,

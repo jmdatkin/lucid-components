@@ -56,7 +56,7 @@ function App() {
       <Button onClick={() => setSelection(data.slice(5, 10))} label="Select Block"></Button>
       <Button onClick={() => deleteRecords(selection)} label="Delete Records"></Button>
       Selected: {
-        (Array.isArray(selection) ? selection.map((s, i) => s.name + (i < selection.length - 1 ? ', ' : '')) : selection.name)
+        selection.map((s, i) => s.name + (i < selection.length - 1 ? ', ' : ''))
       }
 
       <DataTable

@@ -1,10 +1,8 @@
 import React, { ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import DataTableBody from "./data-table-body";
-
-import './DataTable.scss';
 import DataTableHeaderProps from "./data-table-header";
 import { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
-import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableData, DataTableRowClickHandler, DataTableSelectionChangeHandler } from "../../types/data-table";
+import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableRowClickHandler, DataTableSelectionChangeHandler, SelectionMode } from "../../types/data-table";
 import { localeComparator, resolveFieldData, sort } from "../../utils/util";
 import { Filter, FilterMatchMode, applyFilter } from "../../services/filter-service";
 import InputText from "../InputText";
@@ -12,11 +10,6 @@ import { DataTableColumnProps } from "./data-table-column";
 import DataTableControls from "./data-table-controls";
 import DataTableHeader from "./data-table-header";
 
-enum SelectionMode {
-    SINGLE,
-    MULTIPLE,
-    CHECKBOX,
-};
 
 type DataTableProps<D> = {
     children: ReactNode,

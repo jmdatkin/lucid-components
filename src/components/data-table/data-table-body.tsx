@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableRowClickEvent, DataTableRowClickHandler, DataTableSelectionChangeHandler } from "../../types/data-table";
-import { SelectionMode } from "./data-table";
+import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableRowClickEvent, DataTableRowClickHandler, DataTableSelectionChangeHandler, SelectionMode } from "../../types/data-table";
 import DataTableBodyRow from "./data-table-body-row";
 import isEqual from "lodash/isEqual";
 import { DataTableColumnProps } from "./data-table-column";

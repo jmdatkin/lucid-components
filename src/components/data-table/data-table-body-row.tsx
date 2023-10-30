@@ -1,10 +1,9 @@
 import { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
-import { DataTableCellClickHandler, DataTableRowClickHandler } from "../../types/data-table";
+import { DataTableCellClickHandler, DataTableRowClickHandler, SelectionMode } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
 import { columnRefersToField, getColumnByField } from "../../utils/util";
 import { DataTableColumnProps } from "./data-table-column";
 import DataTableCheckboxCell from "./data-table-checkbox-cell";
-import { SelectionMode } from "./data-table";
 
 type DataTableBodyRowProps<D> = {
     style?: CSSProperties,

@@ -2,12 +2,11 @@ import { MouseEvent, MouseEventHandler, ReactElement, ReactNode } from "react";
 import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
 import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
-import { SelectionMode } from "./data-table";
 import DataTableCheckboxHeaderCell from "./data-table-checkbox-header-cell";
-import { DataTableSelectionChangeHandler } from "../../types/data-table";
+import { DataTableSelectionChangeHandler, SelectionMode } from "../../types/data-table";
 
 type DataTableHeaderProps<D> = {
-    originalData: D[],yy
+    originalData: D[],
     data: D[],
     columns?: ReactElement<DataTableColumnProps>[],
     selection: D[],
@@ -38,14 +37,16 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
             }
         }
 
+        // Header checkbox used to toggle select all
         const checkboxCellClickHandler: MouseEventHandler = (e) => {
             if (props.selectionMode === SelectionMode.CHECKBOX || props.selectionMode === SelectionMode.MULTIPLE) {
                 if (props.onSelectionChange) {
 
-                    // If all records selected, deselect all
+                    // If all records are selected, deselect all
                     if (props.selection.length === props.originalData.length)
                         props.onSelectionChange({ selection: [] });
 
+                    // Otherwise, select all
                     else
                         props.onSelectionChange({ selection: props.originalData });
                 }
@@ -54,9 +55,10 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
 
         let cell;
 
+        // If column is a checkbox column
         if (column.props.selectionColumn && props.selectionMode !== SelectionMode.SINGLE) {
-            // if (props.selectionMode === SelectionMode.CHECKBOX) {
 
+            // Are all records selected ?
             const allSelected = props.selection.length === props.originalData.length;
 
             cell = <DataTableCheckboxHeaderCell
@@ -66,10 +68,11 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
                 onClick={checkboxCellClickHandler}
                 style={column.props.style}
             />
-            // } else {
-            //     cell = <></>
-            // }
-        } else {
+            
+        }
+        
+        // Column is a data column, or selection mode is single and we shouldn't render a checkbox
+        else {
             cell = <DataTableHeaderCell
                 key={index}
                 column={column}
