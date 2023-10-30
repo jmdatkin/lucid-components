@@ -1,0 +1,32 @@
+span.lucid-badge {
+    @apply block;
+    @apply rounded-full;
+    @apply p-2;
+    @apply text-sm font-bold;
+    @apply w-[3rem];
+    @apply text-center;
+}
+
+span.lucid-badge-primary {
+    @apply bg-blue-500;
+}
+
+span.lucid-badge-secondary {
+    @apply bg-zinc-500;
+}
+
+span.lucid-badge-success {
+    @apply bg-green-500;
+}
+
+span.lucid-badge-alert {
+    @apply bg-red-500;
+}
+
+span.lucid-badge-info {
+    @apply bg-cyan-500;
+}
+
+span.lucid-badge-warning {
+    @apply bg-yellow-400;
+}

@@ -9,6 +9,8 @@ import { Filter, FilterMatchMode } from './services/filter-service'
 import { isEqual } from 'lodash'
 import IconButton from './components/icon-button'
 import { BsAsterisk, BsBracesAsterisk } from 'react-icons/bs'
+import Badge from './components/badge'
+import { Severity } from './types/severity'
 
 function App() {
 
@@ -64,7 +66,7 @@ function App() {
 
       <DataTable
         data={data}
-        width={1200}
+        width={1600}
         rows={10}
         filters={filters.current}
         selection={selection}
@@ -87,7 +89,15 @@ function App() {
         <DataTableColumn header="Phone" field="phone" style={{ minWidth: '16rem' }} />
         <DataTableColumn header="E-mail" field="email" style={{ minWidth: '20rem' }} />
         <DataTableColumn header="Address" field="address" style={{ minWidth: '16rem' }} />
-        <DataTableColumn header="Postal Code" field="postalZip" style={{ minWidth: '16rem' }}
+        <DataTableColumn header="Postal Code" field="postalZip" style={{ minWidth: '8rem' }} />
+        <DataTableColumn header="Farm" field="ownsFarm" style={{ minWidth: '4rem' }}
+          renderContent={(rowData) => {
+            if (parseInt(rowData.ownsFarm) === 0) {
+              return <Badge label="No" severity={Severity.ALERT}></Badge>
+            } else {
+              return <Badge label="Yes" severity={Severity.SUCCESS}></Badge>
+            }
+          }}
         />
       </DataTable>
 
