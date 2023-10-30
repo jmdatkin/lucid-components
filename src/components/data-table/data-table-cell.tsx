@@ -3,6 +3,7 @@ import { DataTableCellClickHandler } from "../../types/data-table";
 
 type DataTableCellProps<D> = {
     style?: CSSProperties,
+    renderContent?: (rowData: D) => JSX.Element,
     value: any,
     record: D,
     rowIndex: number,
@@ -29,7 +30,7 @@ function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<
 
     return (
         <td onClick={onClick} ref={cellElementRef} className="lucid-datatable-cell" style={props.style}>
-            {props.value}
+            {props.renderContent ? props.renderContent(props.record) : props.value}
         </td>
     );
 }

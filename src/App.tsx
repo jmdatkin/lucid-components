@@ -74,7 +74,8 @@ function App() {
         <DataTableColumn header="Phone" field="phone" style={{minWidth: '16rem'}}/>
         <DataTableColumn header="E-mail" field="email" style={{minWidth: '20rem'}}/>
         <DataTableColumn header="Address" field="address" style={{minWidth: '16rem'}}/>
-        <DataTableColumn header="Postal Code" field="postalZip" style={{minWidth: '16rem'}}/>
+        <DataTableColumn header="Postal Code" field="postalZip" style={{minWidth: '16rem'}}
+          />
       </DataTable>
 
       {/* {selection ? JSON.stringify(selection) : ''} */}

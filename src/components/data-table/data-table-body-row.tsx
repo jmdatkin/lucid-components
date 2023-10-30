@@ -30,11 +30,15 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
     const createContent = () => {
         return Object.entries(props.record).map(([field, data], idx) => {
 
-            const cellStyle = getColumnByField(props.columns, field)?.props.style;
+            const column = getColumnByField(props.columns, field);
+
+            const cellStyle = column?.props.style;
+            const cellRenderFxn = column?.props.renderContent;
 
             return (
                 <DataTableCell
                     style={cellStyle}
+                    renderContent={cellRenderFxn}
                     record={props.record}
                     value={data}
                     rowIndex={props.rowIndex}

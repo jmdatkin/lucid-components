@@ -4,16 +4,16 @@ import { BsFiletypeJsx } from "react-icons/bs";
 type DataTableColumnProps = {
     header: string,
     field: string,
-    style?: CSSProperties
-};
+    style?: CSSProperties,
+    renderContent?: (rowData: Record<string, any>) => JSX.Element
+}
 
-const DataTableColumn = (props: DataTableColumnProps) => {
+// function DataTableColumn<D extends Record<string, any>>(props: DataTableColumnProps<D>) {
+    const DataTableColumn = (props: DataTableColumnProps) => {
 
-    return ( 
-        <div style={props.style} className="lucid-datatable-column">
-
-        </div>
-     );
+    return (
+        <></>
+    );
 }
 
 export type { DataTableColumnProps };

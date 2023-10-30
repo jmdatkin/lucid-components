@@ -3,15 +3,15 @@ import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort
 import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
 
-type DataTableHeader<D> = {
+type DataTableHeaderProps<D> = {
     columns?: ReactElement<DataTableColumnProps>[],
-    data: D,
+    data: D[],
     sortField: string | null,
     sortOrder: SortMode,
     onSortChange: DataTableColumnSortHandler
 };
 
-function DataTableHeader<D extends Record<string, any>>(props: DataTableHeader<D>) {
+function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderProps<D>) {
 
     const createCell = (column: ReactElement<DataTableColumnProps>, index: number) => {
         const isColumnSorted = column.props.field === props.sortField;
