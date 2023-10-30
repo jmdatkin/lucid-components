@@ -1,15 +1,16 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { BsFiletypeJsx } from "react-icons/bs";
 
 type DataTableColumnProps = {
     header: string,
-    field: string
+    field: string,
+    style?: CSSProperties
 };
 
 const DataTableColumn = (props: DataTableColumnProps) => {
 
     return ( 
-        <div className="lucid-datatable-column">
+        <div style={props.style} className="lucid-datatable-column">
 
         </div>
      );

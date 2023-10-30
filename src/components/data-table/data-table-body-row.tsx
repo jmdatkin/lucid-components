@@ -1,8 +1,10 @@
-import { MouseEventHandler, useRef } from "react";
+import { CSSProperties, MouseEventHandler, useRef } from "react";
 import { DataTableCellClickHandler, DataTableRowClickHandler } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
+import { getColumnByField } from "../../utils/util";
 
 type DataTableBodyRowProps<D> = {
+    style?: CSSProperties,
     columns?: any,
     selected: boolean,
     record: D,
@@ -26,16 +28,25 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
     };
 
     const createContent = () => {
-        return Object.values(props.record).map((column, idx) => {
+        return Object.entries(props.record).map(([field, data], idx) => {
+
+            const cellStyle = getColumnByField(props.columns, field)?.props.style;
+
             return (
-                <DataTableCell record={props.record} value={column} rowIndex={props.rowIndex} cellIndex={idx} key={idx} onCellClick={props.onCellClick}
+                <DataTableCell
+                    style={cellStyle}
+                    record={props.record}
+                    value={data}
+                    rowIndex={props.rowIndex}
+                    cellIndex={idx} key={idx}
+                    onCellClick={props.onCellClick}
                 ></DataTableCell>
             )
         })
     };
 
     return (
-        <tr className={`lucid-datatable-row ${props.selected ? 'lucid-datatable-row-selected' : ''}`} ref={rowElementRef} onClick={onRowClick}>
+        <tr className={`lucid-datatable-row ${props.selected ? 'lucid-datatable-row-selected' : ''}`} style={props.style} ref={rowElementRef} onClick={onRowClick}>
            {createContent()} 
         </tr>
     );

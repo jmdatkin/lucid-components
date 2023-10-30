@@ -4,7 +4,7 @@ import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
 
 type DataTableHeader<D> = {
-    columns: ReactElement[] | null,
+    columns?: ReactElement<DataTableColumnProps>[],
     data: D,
     sortField: string | null,
     sortOrder: SortMode,
@@ -31,7 +31,14 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeader<D
             props.onSortChange(column.props.field, newSortOrder, e);
         }
 
-        const cell = <DataTableHeaderCell key={index} column={column} isSorted={isColumnSorted} order={props.sortOrder} onClick={cellClickHandler}></DataTableHeaderCell>
+        const cell = <DataTableHeaderCell
+            key={index}
+            column={column}
+            isSorted={isColumnSorted}
+            order={props.sortOrder}
+            onClick={cellClickHandler}
+            style={column.props.style}
+        />
 
         return cell;
     }

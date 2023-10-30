@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableRowClickEvent, DataTableRowClickHandler, DataTableSelectionChangeHandler } from "../../types/data-table";
 import { SelectionMode } from "./data-table";
 import DataTableBodyRow from "./data-table-body-row";
 import isEqual from "lodash/isEqual";
+import { DataTableColumnProps } from "./data-table-column";
 
 type DataTableBodyProps<D> = {
     data: D[],
+    columns?: ReactElement<DataTableColumnProps>[],
     selectionMode?: SelectionMode,
     selection: D | D[],
     onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
@@ -71,6 +73,7 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
         return props.data.map((record, idx) => {
             return (
                 <DataTableBodyRow
+                    columns={props.columns}
                     selected={isSelected(record)}
                     onRowClick={onRowClick}
                     onCellClick={onCellClick}

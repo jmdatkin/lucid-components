@@ -8,6 +8,7 @@ import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableData, Data
 import { localeComparator, resolveFieldData, sort } from "../../utils/util";
 import { Filter, FilterMatchMode, applyFilter } from "../../services/filter-service";
 import InputText from "../InputText";
+import { DataTableColumnProps } from "./data-table-column";
 
 enum SelectionMode {
     SINGLE,
@@ -16,8 +17,10 @@ enum SelectionMode {
 
 type DataTableProps<D> = {
     children: ReactNode,
+    width?: number,
     data: D[],
     dataKey?: string,
+    filters?: Filter[],
     selection: D | D[],
     selectionMode?: SelectionMode,
     onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
@@ -39,17 +42,6 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     // const [filters, setFilters] = useState<FilterMatchMode>()
     const [filterInput, setFilterInput] = useState('');
-    const filters = useRef<Filter[]>([
-        {
-            field: 'name',
-            matchMode: FilterMatchMode.CONTAINS
-        },
-        {
-            field: 'email',
-            matchMode: FilterMatchMode.CONTAINS
-        }
-    ]
-    );
 
     const [finalData, setFinalData] = useState<typeof props.data>(props.data);
 
@@ -59,11 +51,11 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     }
 
     const getColumns = () => {
-        const columns = React.Children.toArray(props.children) as ReactElement[];
+        const columns = React.Children.toArray(props.children) as ReactElement<DataTableColumnProps>[];
 
-        if (!columns) {
-            return null;
-        }
+        // if (!columns) {
+        //     return null;
+        // }
 
         return columns;
     };
@@ -97,13 +89,20 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     const createHeader = () => {
         return (
-            <DataTableHeader onSortChange={onSortChange} sortField={sortField} sortOrder={sortOrder} columns={getColumns()} data={props.data} />
+            <DataTableHeader
+                onSortChange={onSortChange}
+                sortField={sortField}
+                sortOrder={sortOrder}
+                columns={getColumns()}
+                data={props.data}
+            />
         )
     }
 
     const createContent = () => {
         return (
             <DataTableBody
+                columns={getColumns()}
                 selectionMode={props.selectionMode}
                 selection={props.selection}
                 onSelectionChange={props.onSelectionChange}
@@ -120,22 +119,24 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         if (sortField !== null)
             newFinalData = sortSingle(newFinalData, sortField, sortOrder);
 
-        if (filterInput !== '') {
-            newFinalData = applyFilter(newFinalData, filterInput, filters.current)
+        if (props.filters && filterInput !== '') {
+            newFinalData = applyFilter(newFinalData, filterInput, props.filters)
         }
 
         setFinalData(newFinalData);
 
-    }, [sortField, sortOrder, filters.current, filterInput]);
+    }, [sortField, sortOrder, props.filters, filterInput]);
 
     return (
-        <div className="lucid-datatable">
-            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)}></InputText>
-            <table>
-                {createHeader()}
-                {createContent()}
-            </table>
-        </div>
+        <>
+            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)} placeholder="Filter data"></InputText>
+            <div className="lucid-datatable" style={{ width: props.width, overflowX: 'scroll', whiteSpace: 'nowrap' }}>
+                <table style={{ width: '100%' }}>
+                    {createHeader()}
+                    {createContent()}
+                </table>
+            </div>
+        </>
     );
 }
 

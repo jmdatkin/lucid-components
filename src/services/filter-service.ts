@@ -12,7 +12,7 @@ enum FilterMatchMode {
     STARTS_WITH,
 }
 
-const applyFilter = (data: any[], filterValue: FilterValue, filter: Filter | Filter[]) => {
+const applyFilter = (data: any[], filterValue: FilterValue, filter: Filter[]) => {
     return data.filter((record) => {
 
         // Array of filters
@@ -26,11 +26,11 @@ const applyFilter = (data: any[], filterValue: FilterValue, filter: Filter | Fil
             return match;
         }
 
-        // Single filter
-        else {
-            const comparedField = resolveFieldData(record, filter.field);
-            return FILTER_MAP[filter.matchMode](comparedField, filterValue as string);
-        }
+        // // Single filter
+        // else {
+        //     const comparedField = resolveFieldData(record, filter.field);
+        //     return FILTER_MAP[filter.matchMode](comparedField, filterValue as string);
+        // }
 
     });
 };

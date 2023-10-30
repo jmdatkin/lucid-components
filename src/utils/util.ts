@@ -1,11 +1,23 @@
+import { ReactElement } from "react";
 import { SortMode } from "../components/data-table/sort-order-indicator";
 import isEqual from "lodash/isEqual";
+import { DataTableColumnProps } from "../components/data-table/data-table-column";
 
 // From https://github.com/primefaces/primereact/blob/master/components/lib/utils/ObjectUtils.js#L409
 const localeComparator = (locale: string | string[]) => {
     return new Intl.Collator(locale, { numeric: true }).compare;
-
 }
+
+const getColumnByField = (columns: ReactElement<DataTableColumnProps>[], field: string) => {
+    const filteredColumns = Array.from(columns).filter((column) => {
+        return column.props.field === field;
+    });
+
+    if (filteredColumns.length < 1)
+        return null;
+
+    return filteredColumns[0];
+};
 
 const isEmpty = (value: any) => {
     return value === null || value === undefined || value === '' || (Array.isArray(value) && value.length === 0) || (!(value instanceof Date) && typeof value === 'object' && Object.keys(value).length === 0);
@@ -116,6 +128,7 @@ const removeAccents = (str: string) => {
 
 
 export {
+    getColumnByField,
     localeComparator,
     sort,
     isEmpty,

@@ -1,7 +1,8 @@
-import { MouseEventHandler, useRef } from "react";
+import { CSSProperties, MouseEventHandler, useRef } from "react";
 import { DataTableCellClickHandler } from "../../types/data-table";
 
 type DataTableCellProps<D> = {
+    style?: CSSProperties,
     value: any,
     record: D,
     rowIndex: number,
@@ -27,7 +28,7 @@ function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<
     };
 
     return (
-        <td onClick={onClick} ref={cellElementRef} className="lucid-datatable-cell">
+        <td onClick={onClick} ref={cellElementRef} className="lucid-datatable-cell" style={props.style}>
             {props.value}
         </td>
     );

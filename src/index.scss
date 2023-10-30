@@ -25,13 +25,18 @@ div.lucid-datatable table {
   tr {
     td {
       @apply p-2;
+      @apply border-zinc-700;
     }
   }
 
   thead {
     tr {
-      td {
+      th {
         @apply cursor-pointer;
+        @apply p-2;
+        @apply border border-zinc-700;
+        @apply text-center;
+        @apply hover:bg-zinc-100;
 
         span {
           @apply flex;
@@ -50,6 +55,5 @@ div.lucid-datatable table {
     tr.lucid-datatable-row-selected {
       @apply bg-blue-200;
     }
-
   }
 }
