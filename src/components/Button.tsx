@@ -1,11 +1,13 @@
 import '@/styles/Button.scss';
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 
 type Props = {
     style?: object,
+    disabled?: boolean,
     className?: string,
-    label: string,
-    onClick?: Function
+    label?: string,
+    onClick?: Function,
+    children?: ReactNode,
 }
 
 function Button(props: Props) {
@@ -26,10 +28,14 @@ function Button(props: Props) {
     };
 
     return (
-        <button style={props.style} aria-label={props.label} ref={buttonElRef} className={`fc-button ${props.className}`} onClick={handleClick} onKeyDown={handleKeyDown}>
-            {props.label}
+        <button disabled={props.disabled} style={props.style} aria-label={props.label} ref={buttonElRef} className={`fc-button ${props.className ? props.className : ''}`} onClick={handleClick} onKeyDown={handleKeyDown}>
+            {props.children ? props.children : props.label}
         </button>
     );
 }
+
+Button.defaultProps = {
+    disabled: false
+};
 
 export default Button;

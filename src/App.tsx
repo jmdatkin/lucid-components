@@ -62,6 +62,7 @@ function App() {
       <DataTable
         data={data}
         width={1200}
+        rows={10}
         filters={filters.current}
         selection={selection}
         onSelectionChange={(e) => setSelection(e.selection)}

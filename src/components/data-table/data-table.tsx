@@ -9,6 +9,11 @@ import InputText from "../InputText";
 import { DataTableColumnProps } from "./data-table-column";
 import DataTableControls from "./data-table-controls";
 import DataTableHeader from "./data-table-header";
+import usePaginate from "../../hooks/usePaginate";
+import Paginator from "./paginator";
+
+import '../../styles/DataTable.scss';
+import DataTableFooter from "./data-table-footer";
 
 
 type DataTableProps<D> = {
@@ -16,6 +21,7 @@ type DataTableProps<D> = {
     width?: number,
     data: D[],
     dataKey?: string,
+    rows?: number,
     filters?: Filter[],
     selection: D[],
     selectionMode?: SelectionMode,
@@ -40,8 +46,12 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     const [filterInput, setFilterInput] = useState('');
 
     const [data_sorted, setData_sorted] = useState<typeof props.data>(props.data);
-    const [data_filtered, setData_filtered] = useState<typeof props.data >(props.data);
+    const [data_filtered, setData_filtered] = useState<typeof props.data>(props.data);
+    
+    const { pageData: data_page, goNextPage, goPrevPage, currentPage, setPage, numPages } = usePaginate(data_filtered, props.rows!);
+
     const [data_final, setData_final] = useState<typeof props.data>(props.data);
+
 
     const onSortChange: DataTableColumnSortHandler = (column, order, e) => {
         setSortOrder(order);
@@ -88,7 +98,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         return (
             <DataTableHeader
                 originalData={props.data}
-                data={data_final}
+                data={data_page}
                 columns={getColumns()}
                 selection={props.selection}
                 selectionMode={props.selectionMode}
@@ -104,7 +114,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         return (
             <DataTableBody
                 originalData={props.data}
-                data={data_final}
+                data={data_page}
                 columns={getColumns()}
                 selectionMode={props.selectionMode}
                 selection={props.selection}
@@ -120,7 +130,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     useEffect(() => {
         if (sortField !== null)
             setData_sorted(sortSingle(props.data, sortField, sortOrder));
-        else 
+        else
             setData_sorted(props.data);
     }, [sortField, sortOrder, props.data]);
 
@@ -134,8 +144,8 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     }, [data_sorted, filterInput])
 
     useEffect(() => {
-        setData_final(data_filtered);
-    }, [data_filtered])
+        setData_final(data_page);
+    }, [data_page])
 
     return (
         <>
@@ -157,6 +167,15 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                         {createContent()}
                     </table>
                 </div>
+                <DataTableFooter>
+                    <Paginator
+                        numPages={numPages.current}
+                        currentPage={currentPage}
+                        onPrevPage={goPrevPage}
+                        onNextPage={goNextPage}
+                        setPage={setPage}
+                    ></Paginator>
+                </DataTableFooter>
             </div>
         </>
     );

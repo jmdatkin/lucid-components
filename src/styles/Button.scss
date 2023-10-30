@@ -50,4 +50,10 @@
         @apply hover:bg-slate-50;
         @apply active:bg-slate-100;
     }
+
+    button.fc-button:disabled {
+        @apply pointer-events-none;
+
+    }
+    
 }
