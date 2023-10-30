@@ -6,6 +6,8 @@ import DataTableHeader from "./data-table-header";
 import { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
 import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableData, DataTableRowClickHandler, DataTableSelectionChangeHandler } from "../../types/data-table";
 import { localeComparator, resolveFieldData, sort } from "../../utils/util";
+import { Filter, FilterMatchMode, applyFilter } from "../../services/filter-service";
+import InputText from "../InputText";
 
 enum SelectionMode {
     SINGLE,
@@ -23,6 +25,10 @@ type DataTableProps<D> = {
     onRowClick?: DataTableRowClickHandler<D>
 };
 
+
+// TODO: Don't re-compute sort on filter change and vice versa, aka store sort result and filter result separately
+//  current method will cost performance with large data sets
+
 // TODO: Fix row index being preserved when sorting
 // TODO: Formalize data model, e.g. rowKey
 
@@ -30,6 +36,20 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     const [sortField, setSortField] = useState<string | null>(null);
     const [sortOrder, setSortOrder] = useState<SortMode>(SortMode.ASCENDING);
+
+    // const [filters, setFilters] = useState<FilterMatchMode>()
+    const [filterInput, setFilterInput] = useState('');
+    const filters = useRef<Filter[]>([
+        {
+            field: 'name',
+            matchMode: FilterMatchMode.CONTAINS
+        },
+        {
+            field: 'email',
+            matchMode: FilterMatchMode.CONTAINS
+        }
+    ]
+    );
 
     const [finalData, setFinalData] = useState<typeof props.data>(props.data);
 
@@ -96,12 +116,21 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     // Re-sort data when sort column/order changes
     useEffect(() => {
+        let newFinalData = [...props.data];
         if (sortField !== null)
-            setFinalData(sortSingle(props.data, sortField, sortOrder));
-    }, [sortField, sortOrder]);
+            newFinalData = sortSingle(newFinalData, sortField, sortOrder);
+
+        if (filterInput !== '') {
+            newFinalData = applyFilter(newFinalData, filterInput, filters.current)
+        }
+
+        setFinalData(newFinalData);
+
+    }, [sortField, sortOrder, filters.current, filterInput]);
 
     return (
         <div className="lucid-datatable">
+            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)}></InputText>
             <table>
                 {createHeader()}
                 {createContent()}

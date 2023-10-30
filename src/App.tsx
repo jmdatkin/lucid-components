@@ -22,16 +22,17 @@ function App() {
   return (
     <div className="App">
       <Button onClick={() => setSelection([])} label="Clear Selection"></Button>
+      <Button onClick={() => setSelection(data.current.slice(5,10))} label="Select Block"></Button>
       Selected: {
       (Array.isArray(selection) ? selection.map((s,i) => s.name + (i < selection.length - 1 ? ', ' : '')) : selection.name)
       }
+
       <DataTable
         data={data.current}
         selection={selection}
         onSelectionChange={(e) => setSelection(e.selection)}
         onCellClick={(e) => console.log(e)}
         selectionMode={SelectionMode.MULTIPLE}
-
       >
         <DataTableColumn header="Name" field="name" />
         <DataTableColumn header="Phone" field="phone" />
@@ -39,6 +40,7 @@ function App() {
         <DataTableColumn header="Address" field="address" />
         <DataTableColumn header="Postal Code" field="postalZip" />
       </DataTable>
+
       {/* {selection ? JSON.stringify(selection) : ''} */}
     </div>
   )

@@ -4,7 +4,7 @@ export default [
         "phone": "(147) 225-3273",
         "email": "donec@icloud.com",
         "address": "P.O. Box 693, 1179 Dictum Rd.",
-        "postalZip": "93726"
+        "postalZip": "93726",
     },
     {
         "name": "Rama Nieves",
