@@ -9,6 +9,7 @@ import { localeComparator, resolveFieldData, sort } from "../../utils/util";
 import { Filter, FilterMatchMode, applyFilter } from "../../services/filter-service";
 import InputText from "../InputText";
 import { DataTableColumnProps } from "./data-table-column";
+import DataTableControls from "./data-table-controls";
 
 enum SelectionMode {
     SINGLE,
@@ -23,7 +24,7 @@ type DataTableProps<D> = {
     filters?: Filter[],
     selection: D | D[],
     selectionMode?: SelectionMode,
-    onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
+    onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
     onRowClick?: DataTableRowClickHandler<D>
 };
@@ -125,16 +126,28 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
         setFinalData(newFinalData);
 
-    }, [sortField, sortOrder, props.filters, filterInput]);
+    }, [sortField, sortOrder, props.filters, filterInput, props.data]);
 
     return (
         <>
-            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)} placeholder="Filter data"></InputText>
-            <div className="lucid-datatable" style={{ width: props.width, overflowX: 'scroll', whiteSpace: 'nowrap' }}>
-                <table style={{ width: '100%' }}>
-                    {createHeader()}
-                    {createContent()}
-                </table>
+            <div className="lucid-datatable" style={{width: props.width}}>
+                <DataTableControls
+                    renderStart={() => {
+                        return (
+                            <></>
+                        )
+                    }}
+                    renderEnd={() => {
+                        return (
+                            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)} placeholder="Filter data"></InputText>
+                        )
+                    }}></DataTableControls>
+                <div className="lucid-datatable-table-wrapper" style={{ overflowX: 'scroll', whiteSpace: 'nowrap' }}>
+                    <table style={{ width: '100%' }}>
+                        {createHeader()}
+                        {createContent()}
+                    </table>
+                </div>
             </div>
         </>
     );

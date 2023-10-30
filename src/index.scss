@@ -10,10 +10,12 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  // display: flex;
+  // place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  @apply text-zinc-900;
+  
 }
 
 h1 {
@@ -21,39 +23,69 @@ h1 {
   line-height: 1.1;
 }
 
-div.lucid-datatable table {
-  tr {
-    td {
-      @apply p-2;
-      @apply border-zinc-700;
-    }
+@layer lucid-components;
+div.lucid-datatable {
+  @apply border border-slate-600;
+
+  div.lucid-datatable-controls {
+    @apply bg-zinc-200;
   }
 
-  thead {
-    tr {
-      th {
-        @apply cursor-pointer;
-        @apply p-2;
-        @apply border border-zinc-700;
-        @apply text-center;
-        @apply hover:bg-zinc-100;
+  table {
+    @apply border-l-0 border-r-0;
+    @apply border-slate-600;
 
-        span {
-          @apply flex;
-          @apply items-center justify-between;
+    tr {
+      td {
+        @apply p-3;
+        // @apply border-zinc-600;
+      }
+      td {
+        @apply border-l-0;
+      }
+      td{
+        @apply border-r-0;
+      }
+    }
+
+    thead {
+      tr {
+        @apply bg-zinc-200;
+
+        th {
+          @apply cursor-pointer;
+          @apply p-2;
+          // @apply border border-zinc-600;
+          @apply text-center;
+
+          span {
+            @apply flex;
+            @apply items-center justify-between;
+          }
+        }
+
+        th:first-of-type {
+          @apply border-l-0;
+        }
+        th:last-of-type {
+          @apply border-r-0;
         }
       }
     }
-  }
 
-  tbody {
-    tr {
-      @apply cursor-pointer;
-      @apply hover:bg-zinc-100;
-    }
+    tbody {
+      tr {
+        @apply cursor-pointer;
+        @apply hover:bg-zinc-100;
+      }
 
-    tr.lucid-datatable-row-selected {
-      @apply bg-blue-200;
+      tr:nth-child(2n + 1) {
+        @apply bg-blue-50;
+      }
+
+      tr.lucid-datatable-row-selected {
+        @apply bg-blue-200;
+      }
     }
   }
 }

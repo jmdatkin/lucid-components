@@ -8,6 +8,7 @@ import DataTable, { SelectionMode } from './components/data-table/data-table'
 import DataTableColumn from './components/data-table/data-table-column'
 import testData from './test-data'
 import { Filter, FilterMatchMode } from './services/filter-service'
+import { isEqual } from 'lodash'
 
 function App() {
 
@@ -15,9 +16,9 @@ function App() {
     console.log(e.target.value);
   }
 
-  const [selection, setSelection] = useState<typeof data.current | typeof data.current[number]>([])
+  const [selection, setSelection] = useState<typeof data>([])
 
-  const data = useRef(testData);
+  const [data, setData] = useState(testData);
 
   const filters = useRef<Filter[]>([
     {
@@ -43,16 +44,25 @@ function App() {
   ]
   );
 
+  const deleteRecords = (records: typeof data) => {
+    let newData = [...data];
+    
+    const filteredData = newData.filter((_record) => records.findIndex((r) => isEqual(r, _record)) <= -1);
+    console.log(filteredData);
+    setData(filteredData);
+  };
+
   return (
     <div className="App">
       <Button onClick={() => setSelection([])} label="Clear Selection"></Button>
-      <Button onClick={() => setSelection(data.current.slice(5, 10))} label="Select Block"></Button>
+      <Button onClick={() => setSelection(data.slice(5, 10))} label="Select Block"></Button>
+      <Button onClick={() => deleteRecords(selection)} label="Delete Records >:)"></Button>
       Selected: {
         (Array.isArray(selection) ? selection.map((s, i) => s.name + (i < selection.length - 1 ? ', ' : '')) : selection.name)
       }
 
       <DataTable
-        data={data.current}
+        data={data}
         width={1200}
         filters={filters.current}
         selection={selection}
@@ -62,7 +72,7 @@ function App() {
       >
         <DataTableColumn header="Name" field="name" style={{minWidth: '16rem'}}/>
         <DataTableColumn header="Phone" field="phone" style={{minWidth: '16rem'}}/>
-        <DataTableColumn header="E-mail" field="email" style={{minWidth: '16rem'}}/>
+        <DataTableColumn header="E-mail" field="email" style={{minWidth: '20rem'}}/>
         <DataTableColumn header="Address" field="address" style={{minWidth: '16rem'}}/>
         <DataTableColumn header="Postal Code" field="postalZip" style={{minWidth: '16rem'}}/>
       </DataTable>

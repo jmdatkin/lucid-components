@@ -10,7 +10,7 @@ type DataTableBodyProps<D> = {
     columns?: ReactElement<DataTableColumnProps>[],
     selectionMode?: SelectionMode,
     selection: D | D[],
-    onSelectionChange?: DataTableSelectionChangeHandler<D | D[]>,
+    onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
     onRowClick?: DataTableRowClickHandler<D>
 }
@@ -41,7 +41,7 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
             let newSelection;
             // setSelected((prev) => {
             if (props.selectionMode === SelectionMode.SINGLE) {
-                newSelection = e.record;
+                newSelection = [e.record];
                 // return e.record;
             }
             else if (props.selectionMode === SelectionMode.MULTIPLE) {
