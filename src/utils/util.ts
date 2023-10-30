@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { SortMode } from "../components/data-table/sort-order-indicator";
 import isEqual from "lodash/isEqual";
 import { DataTableColumnProps } from "../components/data-table/data-table-column";
@@ -7,6 +7,10 @@ import { DataTableColumnProps } from "../components/data-table/data-table-column
 const localeComparator = (locale: string | string[]) => {
     return new Intl.Collator(locale, { numeric: true }).compare;
 }
+
+const columnRefersToField = (column: ReactElement<DataTableColumnProps>) => {
+    return column.props.field && !column.props.selectionColumn;
+};
 
 const getColumnByField = (columns: ReactElement<DataTableColumnProps>[], field: string) => {
     const filteredColumns = Array.from(columns).filter((column) => {
@@ -129,6 +133,7 @@ const removeAccents = (str: string) => {
 
 export {
     getColumnByField,
+    columnRefersToField,
     localeComparator,
     sort,
     isEmpty,

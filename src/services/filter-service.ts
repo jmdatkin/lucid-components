@@ -26,13 +26,15 @@ enum FilterMatchMode {
     DATE_AFTER
 };
 
-const applyFilter = (data: any[], filterValue: FilterValue, filter: Filter[]) => {
+const applyFilter = (data: any[], filterValue: FilterValue, filters: Filter[]) => {
     return data.filter((record) => {
 
         // Array of filters
-        if (Array.isArray(filter)) {
+        if (Array.isArray(filters)) {
             let match = false;
-            filter.forEach((_filter) => {
+
+            // Iterate over filters and test all of them
+            filters.forEach((_filter) => {
                 const comparedField = resolveFieldData(record, _filter.field);
                 const result = FILTER_MAP[_filter.matchMode](comparedField, filterValue) ?? false;
                 match ||= result;

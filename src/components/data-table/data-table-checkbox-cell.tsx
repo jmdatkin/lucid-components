@@ -2,19 +2,18 @@ import { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
 import { DataTableCellClickHandler } from "../../types/data-table";
 import { DataTableColumnProps } from "./data-table-column";
 
-type DataTableCellProps<D> = {
+type DataTableCheckboxCellProps<D> = {
     style?: CSSProperties,
     selected: boolean,
     column: ReactElement<DataTableColumnProps>,
     renderContent?: (rowData: D) => JSX.Element,
-    value: any,
     record: D,
     rowIndex: number,
     cellIndex: number,
     onCellClick?: DataTableCellClickHandler<D>,
 }
 
-function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<D>) {
+function DataTableCheckboxCell<D extends Record<string, any>>(props: DataTableCheckboxCellProps<D>) {
 
     const cellElementRef = useRef(null);
 
@@ -32,12 +31,11 @@ function DataTableCell<D extends Record<string, any>>(props: DataTableCellProps<
     };
 
     return (
-
-        <td onClick={onClick} ref={cellElementRef} className="lucid-datatable-cell" style={props.style}>
-            {props.renderContent ? props.renderContent(props.record) : props.value}
+        <td onClick={onClick}>
+            <input type="checkbox" checked={props.selected} onChange={(e) => onClick(e as any)}></input>
         </td>
-    );
+    )
 
 }
 
-export default DataTableCell;
+export default DataTableCheckboxCell;

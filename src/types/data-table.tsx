@@ -1,9 +1,11 @@
-import { MouseEvent, Ref } from "react";
+import { MouseEvent, ReactElement, Ref } from "react";
+import { DataTableColumnProps } from "../components/data-table/data-table-column";
 
 type DataTableData = Object[];
 
 type DataTableCellClickEvent<D> = {
     originalEvent: MouseEvent,
+    column: ReactElement<DataTableColumnProps>,
     record: D,
     rowIndex: number,
     cellIndex: number,

@@ -9,7 +9,7 @@ type DataTableBodyProps<D> = {
     data: D[],
     columns?: ReactElement<DataTableColumnProps>[],
     selectionMode?: SelectionMode,
-    selection: D | D[],
+    selection: D[],
     onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
     onRowClick?: DataTableRowClickHandler<D>
@@ -43,19 +43,37 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
             if (props.selectionMode === SelectionMode.SINGLE) {
                 newSelection = [e.record];
                 // return e.record;
+                if (props.onSelectionChange) {
+                    props.onSelectionChange({
+                        selection: newSelection
+                    });
+                }
             }
             else if (props.selectionMode === SelectionMode.MULTIPLE) {
-                newSelection = [...(props.selection as D[]), e.record]
+                newSelection = [...props.selection, e.record]
                 // return [...(prev as D[]), e.record];
+                if (props.onSelectionChange) {
+                    props.onSelectionChange({
+                        selection: newSelection
+                    });
+                }
             }
-            else
-                throw new Error("Selection mode not properly defined.");
+            // else
+            //     throw new Error("Selection mode not properly defined.");
 
-            if (!props.onSelectionChange) return;
-            props.onSelectionChange({
-                selection: newSelection
-            });
+        } else {
+            if (props.selectionMode === SelectionMode.MULTIPLE) {
+                let selectionIdx = props.selection.indexOf(e.record);
+                let newSelection = [...props.selection]
+                newSelection.splice(selectionIdx, 1);
 
+
+                if (props.onSelectionChange) {
+                    props.onSelectionChange({
+                        selection: newSelection
+                    });
+                }
+            }
         }
 
         // Row click callback passed down through props
@@ -64,6 +82,34 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
     }
 
     const onCellClick = (e: DataTableCellClickEvent<D>) => {
+
+        const isRowSelected = isSelected(e.record);
+
+        if (e.column.props.selectionColumn) {
+            if (props.selectionMode === SelectionMode.CHECKBOX) {
+                if (isRowSelected) {
+                    let selectionIdx = props.selection.indexOf(e.record);
+                    let newSelection = [...props.selection]
+                    newSelection.splice(selectionIdx, 1);
+
+                    if (props.onSelectionChange) {
+                        props.onSelectionChange({
+                            selection: newSelection
+                        });
+                    }
+
+                } else {
+                    let newSelection = [...(props.selection as D[]), e.record]
+
+                    if (props.onSelectionChange) {
+                        props.onSelectionChange({
+                            selection: newSelection
+                        });
+                    }
+                }
+            }
+        }
+
         // Cell click callback passed down through props
         if (props.onCellClick)
             props.onCellClick(e);
@@ -75,6 +121,7 @@ function DataTableBody<D extends Record<string, any>>(props: DataTableBodyProps<
                 <DataTableBodyRow
                     columns={props.columns}
                     selected={isSelected(record)}
+                    selectionMode={props.selectionMode}
                     onRowClick={onRowClick}
                     onCellClick={onCellClick}
                     rowIndex={idx}

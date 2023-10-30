@@ -24,7 +24,7 @@ type DataTableProps<D> = {
     data: D[],
     dataKey?: string,
     filters?: Filter[],
-    selection: D | D[],
+    selection: D[],
     selectionMode?: SelectionMode,
     onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
     onCellClick?: DataTableCellClickHandler<D>,
@@ -98,6 +98,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                 sortField={sortField}
                 sortOrder={sortOrder}
                 columns={getColumns()}
+                selectionMode={props.selectionMode}
                 data={props.data}
             />
         )
@@ -122,6 +123,8 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     useEffect(() => {
         if (sortField !== null)
             setData_sorted(sortSingle(props.data, sortField, sortOrder));
+        else 
+            setData_sorted(props.data);
     }, [sortField, sortOrder, props.data]);
 
     // Re-filter data when sort or filter input changes

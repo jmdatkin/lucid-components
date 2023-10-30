@@ -2,12 +2,14 @@ import { MouseEvent, MouseEventHandler, ReactElement, ReactNode } from "react";
 import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
 import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
+import { SelectionMode } from "./data-table";
 
 type DataTableHeaderProps<D> = {
     columns?: ReactElement<DataTableColumnProps>[],
     data: D[],
     sortField: string | null,
     sortOrder: SortMode,
+    selectionMode?: SelectionMode,
     onSortChange: DataTableColumnSortHandler
 };
 
@@ -17,28 +19,46 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
         const isColumnSorted = column.props.field === props.sortField;
 
         const cellClickHandler: MouseEventHandler = (e) => {
-            // Handle user onClick
-            console.log(column.props.field);
+            if (column.props.field) {
 
-            // Sort by ascending by default, otherwise toggle
-            let newSortOrder: SortMode;
-            if (isColumnSorted) {
-                newSortOrder = props.sortOrder === SortMode.ASCENDING ? SortMode.DESCENDING : SortMode.ASCENDING;
-            } else {
-                newSortOrder = SortMode.ASCENDING;
+                // Sort by ascending by default, otherwise toggle
+                let newSortOrder: SortMode;
+                if (isColumnSorted) {
+                    newSortOrder = props.sortOrder === SortMode.ASCENDING ? SortMode.DESCENDING : SortMode.ASCENDING;
+                } else {
+                    newSortOrder = SortMode.ASCENDING;
+                }
+
+                props.onSortChange(column.props.field, newSortOrder, e);
             }
-
-            props.onSortChange(column.props.field, newSortOrder, e);
         }
 
-        const cell = <DataTableHeaderCell
-            key={index}
-            column={column}
-            isSorted={isColumnSorted}
-            order={props.sortOrder}
-            onClick={cellClickHandler}
-            style={column.props.style}
-        />
+        let cell;
+
+        if (column.props.selectionColumn) {
+            if (props.selectionMode === SelectionMode.CHECKBOX) {
+                cell = <DataTableHeaderCell
+                    key={index}
+                    column={column}
+                    isSorted={isColumnSorted}
+                    order={props.sortOrder}
+                    onClick={cellClickHandler}
+                    style={column.props.style}
+                />
+            } else {
+                cell = <></>
+            }
+        } else {
+            cell = <DataTableHeaderCell
+                key={index}
+                column={column}
+                isSorted={isColumnSorted}
+                order={props.sortOrder}
+                onClick={cellClickHandler}
+                style={column.props.style}
+            />
+        }
+
 
         return cell;
     }

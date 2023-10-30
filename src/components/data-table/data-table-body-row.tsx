@@ -1,12 +1,16 @@
-import { CSSProperties, MouseEventHandler, useRef } from "react";
+import { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
 import { DataTableCellClickHandler, DataTableRowClickHandler } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
 import { getColumnByField } from "../../utils/util";
+import { DataTableColumnProps } from "./data-table-column";
+import DataTableCheckboxCell from "./data-table-checkbox-cell";
+import { SelectionMode } from "./data-table";
 
 type DataTableBodyRowProps<D> = {
     style?: CSSProperties,
-    columns?: any,
+    columns?: ReactElement<DataTableColumnProps>[],
     selected: boolean,
+    selectionMode: SelectionMode,
     record: D,
     rowIndex: number,
     onCellClick?: DataTableCellClickHandler<D>,
@@ -28,15 +32,58 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
     };
 
     const createContent = () => {
+        return Array.from(props.columns).map((column, idx) => {
+
+            // Column with data
+            if (column.props.field && !column.props.selectionColumn) {
+                const data = props.record[column.props.field];
+                const cellStyle = column?.props.style;
+                const cellRenderFxn = column?.props.renderContent;
+
+                return (
+                    <DataTableCell
+                        selected={props.selected}
+                        column={column}
+                        style={cellStyle}
+                        renderContent={cellRenderFxn}
+                        record={props.record}
+                        value={data}
+                        rowIndex={props.rowIndex}
+                        cellIndex={idx} key={idx}
+                        onCellClick={props.onCellClick}
+                    ></DataTableCell>
+                )
+            } else if (column.props.selectionColumn && props.selectionMode === SelectionMode.CHECKBOX) {
+
+                const cellStyle = column?.props.style;
+                const cellRenderFxn = column?.props.renderContent;
+
+                return (
+                    <DataTableCheckboxCell
+                        selected={props.selected}
+                        column={column}
+                        style={cellStyle}
+                        renderContent={cellRenderFxn}
+                        record={props.record}
+                        rowIndex={props.rowIndex}
+                        cellIndex={idx} key={idx}
+                        onCellClick={props.onCellClick}
+                    ></DataTableCheckboxCell>
+                )
+            }
+        })
+
         return Object.entries(props.record).map(([field, data], idx) => {
 
-            const column = getColumnByField(props.columns, field);
+            const column = getColumnByField(props.columns, field)!;
 
             const cellStyle = column?.props.style;
             const cellRenderFxn = column?.props.renderContent;
 
             return (
                 <DataTableCell
+                    selected={props.selected}
+                    column={column}
                     style={cellStyle}
                     renderContent={cellRenderFxn}
                     record={props.record}
@@ -51,7 +98,7 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
 
     return (
         <tr className={`lucid-datatable-row ${props.selected ? 'lucid-datatable-row-selected' : ''}`} style={props.style} ref={rowElementRef} onClick={onRowClick}>
-           {createContent()} 
+            {createContent()}
         </tr>
     );
 }

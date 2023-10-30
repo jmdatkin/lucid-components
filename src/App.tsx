@@ -1,6 +1,4 @@
 import { ChangeEventHandler, useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.scss'
 import Button from './components/Button'
 import InputText from './components/InputText'
@@ -68,8 +66,9 @@ function App() {
         selection={selection}
         onSelectionChange={(e) => setSelection(e.selection)}
         onCellClick={(e) => console.log(e)}
-        selectionMode={SelectionMode.MULTIPLE}
+        selectionMode={SelectionMode.CHECKBOX}
       >
+        <DataTableColumn selectionColumn style={{minWidth: '3rem'}}/>
         <DataTableColumn header="Name" field="name" style={{minWidth: '16rem'}}/>
         <DataTableColumn header="Phone" field="phone" style={{minWidth: '16rem'}}/>
         <DataTableColumn header="E-mail" field="email" style={{minWidth: '20rem'}}/>
