@@ -8,7 +8,7 @@ import testData from './test-data-2'
 import { Filter, FilterMatchMode } from './services/filter-service'
 import { isEqual } from 'lodash'
 import IconButton from './components/icon-button'
-import { BsAsterisk, BsBracesAsterisk } from 'react-icons/bs'
+import { BsAsterisk, BsBracesAsterisk, BsTrash } from 'react-icons/bs'
 import Badge from './components/badge'
 import { Severity } from './types/severity'
 
@@ -67,7 +67,7 @@ function App() {
       <DataTable
         data={data}
         width={1600}
-        rows={10}
+        rows={15}
         filters={filters.current}
         selection={selection}
         onSelectionChange={(e) => setSelection(e.selection)}
@@ -75,14 +75,14 @@ function App() {
         selectionMode={SelectionMode.MULTIPLE}
         render_controls={() => {
           return (
-            <>
+            <div style={{display: 'flex'}}>
               <IconButton onClick={() => setSelection([])}><BsAsterisk></BsAsterisk></IconButton>
-              <Button onClick={() => deleteRecords(selection)} label="Delete Records"></Button>
-            </>
+              <IconButton onClick={() => deleteRecords(selection)}><BsTrash></BsTrash></IconButton>
+            </div>
           )
         }}
       >
-        <DataTableColumn selectionColumn style={{ minWidth: '3rem' }} />
+        <DataTableColumn selectionColumn style={{ minWidth: '4rem', textAlign: 'center'}} />
         <DataTableColumn header="id" field="autoincrement" style={{ minWidth: '4rem' }} />
         <DataTableColumn header="First Name" field="firstName" style={{ minWidth: '10rem' }} />
         <DataTableColumn header="Last Name" field="lastName" style={{ minWidth: '10rem' }} />
@@ -90,7 +90,7 @@ function App() {
         <DataTableColumn header="E-mail" field="email" style={{ minWidth: '20rem' }} />
         <DataTableColumn header="Address" field="address" style={{ minWidth: '16rem' }} />
         <DataTableColumn header="Postal Code" field="postalZip" style={{ minWidth: '8rem' }} />
-        <DataTableColumn header="Farm" field="ownsFarm" style={{ minWidth: '4rem' }}
+        {/* <DataTableColumn header="Farm" field="ownsFarm" style={{ minWidth: '4rem' }}
           renderContent={(rowData) => {
             if (parseInt(rowData.ownsFarm) === 0) {
               return <Badge label="No" severity={Severity.ALERT}></Badge>
@@ -98,7 +98,7 @@ function App() {
               return <Badge label="Yes" severity={Severity.SUCCESS}></Badge>
             }
           }}
-        />
+        /> */}
       </DataTable>
 
       {/* {selection ? JSON.stringify(selection) : ''} */}

@@ -31,7 +31,7 @@ function DataTableCheckboxCell<D extends Record<string, any>>(props: DataTableCh
     };
 
     return (
-        <td onClick={onClick}>
+        <td onClick={onClick} style={props.style}>
             <input type="checkbox" checked={props.selected} onChange={(e) => onClick(e as any)}></input>
         </td>
     )

@@ -14,7 +14,8 @@ body {
   // place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  @apply text-zinc-900;
+  @apply text-zinc-950;
+  @apply bg-zinc-800;
 }
 
 h1 {
@@ -24,7 +25,8 @@ h1 {
 
 @layer lucid-components;
 div.lucid-datatable {
-  @apply shadow-lg;
+  // @apply shadow-lg;
+  @apply bg-white;
 
   * {
     @apply transition duration-[0.05s];
@@ -32,16 +34,17 @@ div.lucid-datatable {
   @apply border border-zinc-400;
 
   div.lucid-datatable-controls {
-    @apply bg-zinc-200;
+    // @apply bg-zinc-200;
   }
 
   table {
     @apply border-l-0 border-r-0;
     @apply border-zinc-400;
+    @apply font-medium;
 
     tr {
       td {
-        @apply p-4;
+        @apply py-4 px-3;
         // @apply border-zinc-600;
       }
       td {
@@ -54,13 +57,14 @@ div.lucid-datatable {
 
     thead {
       @apply border-b border-zinc-400;
+      @apply shadow-sm;
 
       tr {
-        @apply bg-zinc-200;
+        // @apply bg-zinc-200;
 
         th {
           @apply cursor-pointer;
-          @apply p-4;
+          @apply py-4 pb-3 px-3;
           // @apply border border-zinc-600;
           @apply text-center;
 

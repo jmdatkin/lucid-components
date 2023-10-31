@@ -15,9 +15,7 @@ const DataTableCheckboxHeaderCell: (props: DataTableCheckboxHeaderCellProps) => 
 
     return (
         <th style={props.style} onClick={props.onClick}>
-            <span>
-                <input type="checkbox" checked={props.checked} onChange={(e) => props.onClick(e as any)}></input>
-            </span>
+            <input type="checkbox" checked={props.checked} onChange={(e) => props.onClick(e as any)}></input>
         </th>
     )
 }

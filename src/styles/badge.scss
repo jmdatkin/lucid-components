@@ -9,24 +9,30 @@ span.lucid-badge {
 
 span.lucid-badge-primary {
     @apply bg-blue-500;
+    @apply text-blue-950;
 }
 
 span.lucid-badge-secondary {
     @apply bg-zinc-500;
+    @apply text-zinc-950;
 }
 
 span.lucid-badge-success {
     @apply bg-green-500;
+    @apply text-green-950;
 }
 
 span.lucid-badge-alert {
     @apply bg-red-500;
+    @apply text-red-950;
 }
 
 span.lucid-badge-info {
     @apply bg-cyan-500;
+    @apply text-cyan-950;
 }
 
 span.lucid-badge-warning {
     @apply bg-yellow-400;
+    @apply text-yellow-950;
 }
