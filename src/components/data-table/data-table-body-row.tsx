@@ -1,7 +1,6 @@
 import { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
 import { DataTableCellClickHandler, DataTableRowClickHandler, SelectionMode } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
-import { columnRefersToField, getColumnByField } from "../../utils/util";
 import { DataTableColumnProps } from "./data-table-column";
 import DataTableCheckboxCell from "./data-table-checkbox-cell";
 
@@ -9,8 +8,8 @@ type DataTableBodyRowProps<D> = {
     style?: CSSProperties,
     columns: ReactElement<DataTableColumnProps>[],
     selected: boolean,
-    selectionMode: SelectionMode,
-    sortField: string,
+    selectionMode?: SelectionMode,
+    sortField?: string,
     record: D,
     rowIndex: number,
     onCellClick?: DataTableCellClickHandler<D>,
@@ -73,28 +72,6 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
                     ></DataTableCheckboxCell>
                 )
             }
-        })
-
-        return Object.entries(props.record).map(([field, data], idx) => {
-
-            const column = getColumnByField(props.columns, field)!;
-
-            const cellStyle = column?.props.style;
-            const cellRenderFxn = column?.props.renderContent;
-
-            return (
-                <DataTableCell
-                    selected={props.selected}
-                    column={column}
-                    style={cellStyle}
-                    renderContent={cellRenderFxn}
-                    record={props.record}
-                    value={data}
-                    rowIndex={props.rowIndex}
-                    cellIndex={idx} key={idx}
-                    onCellClick={props.onCellClick}
-                ></DataTableCell>
-            )
         })
     };
 

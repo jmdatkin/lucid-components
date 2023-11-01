@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEvent, MouseEventHandler, ReactElement } from "react"
+import { CSSProperties, MouseEventHandler, ReactElement } from "react"
 import SortOrderIndicator, { SortMode } from "./sort-order-indicator"
 import { DataTableColumnProps } from "./data-table-column"
 

@@ -1,6 +1,6 @@
-import { MouseEvent, MouseEventHandler, ReactElement, ReactNode } from "react";
-import SortOrderIndicator, { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
-import DataTableColumn, { DataTableColumnProps } from "./data-table-column";
+import { CSSProperties, MouseEventHandler, ReactElement, ReactNode } from "react";
+import { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
+import { DataTableColumnProps } from "./data-table-column";
 import DataTableHeaderCell from "./data-table-header-cell";
 import DataTableCheckboxHeaderCell from "./data-table-checkbox-header-cell";
 import { DataTableSelectionChangeHandler, SelectionMode } from "../../types/data-table";
@@ -8,6 +8,7 @@ import { DataTableSelectionChangeHandler, SelectionMode } from "../../types/data
 type DataTableHeaderProps<D> = {
     originalData: D[],
     data: D[],
+    scrollable: boolean,
     columns?: ReactElement<DataTableColumnProps>[],
     selection: D[],
     onSelectionChange?: DataTableSelectionChangeHandler<D[]>,
@@ -18,6 +19,17 @@ type DataTableHeaderProps<D> = {
 };
 
 function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderProps<D>) {
+
+
+    const createHeaderStyle = () => {
+        const headerStyle: CSSProperties = {};
+        if (props.scrollable) {
+            headerStyle.position = 'sticky';
+            headerStyle.top = 0;
+        };
+        
+        return headerStyle;
+    };
 
     const createCell = (column: ReactElement<DataTableColumnProps>, index: number) => {
         const isColumnSorted = column.props.field === props.sortField;
@@ -60,17 +72,19 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
 
             // Are all records selected ?
             const allSelected = props.selection.length === props.originalData.length;
+            const indeterminate = !allSelected && props.selection.length > 0;
 
             cell = <DataTableCheckboxHeaderCell
                 checked={allSelected}
+                indeterminate={indeterminate}
                 key={index}
                 column={column}
                 onClick={checkboxCellClickHandler}
                 style={column.props.style}
             />
-            
+
         }
-        
+
         // Column is a data column, or selection mode is single and we shouldn't render a checkbox
         else {
             cell = <DataTableHeaderCell
@@ -82,7 +96,6 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
                 style={column.props.style}
             />
         }
-
 
         return cell;
     }
@@ -96,7 +109,7 @@ function DataTableHeader<D extends Record<string, any>>(props: DataTableHeaderPr
     }
 
     return (
-        <thead className="lucid-datatable-header">
+        <thead className="lucid-datatable-header" style={createHeaderStyle()}>
             <tr>
                 {createCells()}
             </tr>

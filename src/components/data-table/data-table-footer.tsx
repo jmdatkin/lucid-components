@@ -6,14 +6,12 @@ type DataTableFooterProps = {
 
 const DataTableFooter = (props: DataTableFooterProps) => {
 
-
     return (
         <div className="lucid-datatable-footer">
             {props.children}
         </div>
-    )
+    );
 
-
-}
+};
 
 export default DataTableFooter;

@@ -8,7 +8,7 @@ type DataTableCellProps<D> = {
     column: ReactElement<DataTableColumnProps>,
     renderContent?: (rowData: D) => JSX.Element,
     value: any,
-    sortField: string,
+    sortField?: string,
     record: D,
     rowIndex: number,
     cellIndex: number,

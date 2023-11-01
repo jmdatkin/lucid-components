@@ -8,12 +8,19 @@
   font-weight: 400;
 }
 
+html {
+  font-size: 62.5%;
+}
+
 body {
   margin: 0;
   // display: flex;
   // place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  font-size: 1.4rem;
+
   @apply text-zinc-950;
   @apply bg-zinc-800;
 }
@@ -27,9 +34,10 @@ h1 {
 div.lucid-datatable {
   // @apply shadow-lg;
   @apply bg-white;
+  @apply p-2;
 
   * {
-    @apply transition duration-[0.05s];
+    @apply transition duration-[0.01s];
   }
   @apply border border-zinc-400;
 
@@ -39,8 +47,8 @@ div.lucid-datatable {
 
   table {
     @apply border-l-0 border-r-0;
-    @apply border-zinc-400;
-    @apply font-medium;
+    // @apply border-zinc-400;
+    // @apply table-fixed;
 
     tr {
       td {
@@ -56,17 +64,21 @@ div.lucid-datatable {
     }
 
     thead {
-      @apply border-b border-zinc-400;
-      @apply shadow-sm;
+      // @apply border-b border-t border-zinc-400;
+      box-shadow: 0 1px 0 #a1a1aa;
+      @apply bg-white;
 
       tr {
         // @apply bg-zinc-200;
 
         th {
+          @apply border-0;
           @apply cursor-pointer;
           @apply py-4 pb-3 px-3;
+          @apply hover:text-zinc-500 text-zinc-900;
+            @apply font-semibold;
+          // @apply font-normal;
           // @apply border border-zinc-600;
-          @apply text-center;
 
           span {
             @apply flex;
@@ -87,6 +99,7 @@ div.lucid-datatable {
       tr {
         @apply cursor-pointer;
         @apply hover:bg-zinc-100;
+        // @apply active:bg-zinc-200;
 
         // td.lucid-datatable-cell-sorted {
         //   @apply bg-zinc-200;
@@ -101,12 +114,13 @@ div.lucid-datatable {
         }
       }
 
-      tr:nth-child(2n + 1) {
-        // @apply bg-zinc-50;
+      tr:nth-child(2n) {
+        @apply bg-zinc-50;
       }
 
       tr.lucid-datatable-row-selected {
         @apply bg-blue-200;
+        // @apply active:bg-blue-300;
       }
     }
   }

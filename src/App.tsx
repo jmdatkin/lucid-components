@@ -1,22 +1,16 @@
-import { ChangeEventHandler, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import './App.scss'
-import Button from './components/Button'
-import InputText from './components/InputText'
 import DataTable, { SelectionMode } from './components/data-table/data-table'
 import DataTableColumn from './components/data-table/data-table-column'
 import testData from './test-data-2'
 import { Filter, FilterMatchMode } from './services/filter-service'
 import { isEqual } from 'lodash'
 import IconButton from './components/icon-button'
-import { BsAsterisk, BsBracesAsterisk, BsTrash } from 'react-icons/bs'
 import Badge from './components/badge'
 import { Severity } from './types/severity'
+import { FiTrash } from 'react-icons/fi'
 
 function App() {
-
-  const onChange: ChangeEventHandler<HTMLInputElement> = function (e) {
-    console.log(e.target.value);
-  }
 
   const [selection, setSelection] = useState<typeof data>([])
 
@@ -54,20 +48,17 @@ function App() {
     let newData = [...data];
 
     const filteredData = newData.filter((_record) => records.findIndex((r) => isEqual(r, _record)) <= -1);
-    console.log(filteredData);
     setData(filteredData);
   };
 
   return (
     <div className="App">
-      {/* Selected: {
-        selection.map((s, i) => s.name + (i < selection.length - 1 ? ', ' : ''))
-      } */}
-
       <DataTable
         data={data}
-        width={1600}
-        rows={15}
+        // width={800}
+        scrollable
+        scrollHeight={800}
+        // rows={15}
         filters={filters.current}
         selection={selection}
         onSelectionChange={(e) => setSelection(e.selection)}
@@ -76,14 +67,13 @@ function App() {
         render_controls={() => {
           return (
             <div style={{display: 'flex'}}>
-              <IconButton onClick={() => setSelection([])}><BsAsterisk></BsAsterisk></IconButton>
-              <IconButton onClick={() => deleteRecords(selection)}><BsTrash></BsTrash></IconButton>
+              <IconButton onClick={() => deleteRecords(selection)}><FiTrash></FiTrash></IconButton>
             </div>
           )
         }}
       >
-        <DataTableColumn selectionColumn style={{ minWidth: '4rem', textAlign: 'center'}} />
-        <DataTableColumn header="id" field="autoincrement" style={{ minWidth: '4rem' }} />
+        <DataTableColumn selectionColumn style={{ width: '4rem', textAlign: 'center'}} />
+        <DataTableColumn header="id" field="autoincrement" style={{ width: '4rem' }} />
         <DataTableColumn header="First Name" field="firstName" style={{ minWidth: '10rem' }} />
         <DataTableColumn header="Last Name" field="lastName" style={{ minWidth: '10rem' }} />
         <DataTableColumn header="Phone" field="phone" style={{ minWidth: '16rem' }} />
@@ -100,8 +90,6 @@ function App() {
           }}
         /> */}
       </DataTable>
-
-      {/* {selection ? JSON.stringify(selection) : ''} */}
     </div>
   )
 }

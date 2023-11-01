@@ -1,15 +1,19 @@
-@import './variables';
+@import "./variables";
 
-input.fc-inputtext {
-    @apply bg-slate-50;
-    @apply text-slate-900;
-    @apply border border-slate-400;
+div.lucid-inputtext-wrapper {
     @apply p-2;
+    @apply border;
+    @apply focus-within:border-zinc-400;
+    @apply space-x-2;
+
+    >span {
+        @apply text-zinc-400;
+    }
+}
+
+input.lucid-inputtext {
+    @apply outline-none;
+    @apply focus-visible:ring-0;
     @apply relative;
-
-
     @apply select-none;
-
-    @apply focus-visible:ring;
-    @apply focus-visible:outline-none;
 }

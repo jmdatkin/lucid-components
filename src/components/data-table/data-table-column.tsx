@@ -1,15 +1,21 @@
 import React, { CSSProperties } from "react";
 import { BsFiletypeJsx } from "react-icons/bs";
 
+enum FieldDataType {
+    String,
+    Number,
+    Date
+};
+
 type DataTableColumnProps = {
     header?: string,
     field?: string,
+    dataType?: FieldDataType,
     style?: CSSProperties,
     selectionColumn?: boolean,
     renderContent?: (rowData: Record<string, any>) => JSX.Element
 }
 
-// function DataTableColumn<D extends Record<string, any>>(props: DataTableColumnProps<D>) {
 const DataTableColumn = (props: DataTableColumnProps) => {
 
     return (
@@ -18,7 +24,8 @@ const DataTableColumn = (props: DataTableColumnProps) => {
 }
 
 DataTableColumn.defaultProps = {
-    selectionColumn: false
+    selectionColumn: false,
+    dataType: FieldDataType.String
 };
 
 export type { DataTableColumnProps };

@@ -5,15 +5,17 @@ import { DataTableColumnSortHandler, SortMode } from "./sort-order-indicator";
 import { DataTableCellClickEvent, DataTableCellClickHandler, DataTableRowClickHandler, DataTableSelectionChangeHandler, SelectionMode } from "../../types/data-table";
 import { localeComparator, resolveFieldData, sort } from "../../utils/util";
 import { Filter, FilterMatchMode, applyFilter } from "../../services/filter-service";
-import InputText from "../InputText";
+import InputText from "../input-text";
 import { DataTableColumnProps } from "./data-table-column";
 import DataTableControls from "./data-table-controls";
 import DataTableHeader from "./data-table-header";
 import usePaginate from "../../hooks/usePaginate";
 import Paginator from "./paginator";
+import { FiFilter } from "react-icons/fi";
 
 import '../../styles/DataTable.scss';
 import DataTableFooter from "./data-table-footer";
+import { BsFilter } from "react-icons/bs";
 
 
 type DataTableProps<D> = {
@@ -22,6 +24,8 @@ type DataTableProps<D> = {
     data: D[],
     dataKey?: string,
     rows?: number,
+    scrollable?: boolean,
+    scrollHeight?: number | string,
     filters?: Filter[],
     selection: D[],
     selectionMode?: SelectionMode,
@@ -32,10 +36,6 @@ type DataTableProps<D> = {
 };
 
 
-// TODO: Don't re-compute sort on filter change and vice versa, aka store sort result and filter result separately
-//  current method will cost performance with large data sets
-
-// TODO: Fix row index being preserved when sorting
 // TODO: Formalize data model, e.g. rowKey
 
 function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
@@ -43,7 +43,6 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     const [sortField, setSortField] = useState<string | null>(null);
     const [sortOrder, setSortOrder] = useState<SortMode>(SortMode.ASCENDING);
 
-    // const [filters, setFilters] = useState<FilterMatchMode>()
     const [filterInput, setFilterInput] = useState('');
 
     const [data_sorted, setData_sorted] = useState<typeof props.data>(props.data);
@@ -115,6 +114,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
         return (
             <DataTableHeader
                 originalData={props.data}
+                scrollable={props.scrollable}
                 data={data_final}
                 columns={getColumns()}
                 selection={props.selection}
@@ -128,9 +128,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     }
 
     const createContent = () => {
-        // if (data_final.length === 0) {
-        //     return <span>No records found!</span>;
-        // }
+
         return (
             <DataTableBody
                 originalData={props.data}
@@ -138,7 +136,7 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                 columns={getColumns()}
                 selectionMode={props.selectionMode}
                 selection={props.selection}
-                sortField={sortField} 
+                sortField={sortField}
                 onSelectionChange={props.onSelectionChange}
                 onCellClick={props.onCellClick}
                 onRowClick={props.onRowClick}
@@ -158,14 +156,25 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
     // Re-filter data when sort or filter input changes
     // Filter 2nd
     useEffect(() => {
+        let result;
         if (props.filters && filterInput !== '') {
-            setData_filtered(applyFilter(data_sorted, filterInput, props.filters))
-        } else if (filterInput === '')
-            setData_filtered(data_sorted!);
+            result = applyFilter(data_sorted, filterInput, props.filters)
+            // setData_filtered(applyFilter(data_sorted, filterInput, props.filters))
+        } else //if (filterInput === '')
+            result = data_sorted;
+        // setData_filtered(data_sorted!);
+        setData_filtered(result);
+
+        // If not paginating, skip page data stage and use filtered data as final data
+        if (!props.rows) {
+            setData_final(result);
+        }
     }, [data_sorted, filterInput])
 
     useEffect(() => {
-        setData_final(data_page);
+        // If paginating, set final data
+        if (props.rows)
+            setData_final(data_page);
     }, [data_page])
 
     return (
@@ -179,30 +188,32 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
                     }}
                     renderEnd={() => {
                         return (
-                            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)} placeholder="Filter data"></InputText>
+                            <InputText onChange={(e) => setFilterInput(e.currentTarget.value)} placeholder="Filter data" glyph={<FiFilter/>}></InputText>
                         )
                     }}></DataTableControls>
-                <div className="lucid-datatable-table-wrapper" style={{ overflowX: 'scroll', whiteSpace: 'nowrap' }}>
+                <div className="lucid-datatable-table-wrapper" style={{ overflowX: 'auto', whiteSpace: 'nowrap', height: props.scrollable ? props.scrollHeight ? props.scrollHeight : 'auto' : 'auto' }}>
                     <table style={{ width: '100%' }}>
                         {createHeader()}
                         {createContent()}
                     </table>
                 </div>
                 <DataTableFooter>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                        <Paginator
-                            numPages={numPages.current}
-                            currentPage={currentPage}
-                            onPrevPage={goPrevPage}
-                            onNextPage={goNextPage}
-                            goFirstPage={goFirstPage}
-                            goLastPage={goLastPage}
-                            setPage={setPage}
-                        ></Paginator>
-                        <span className="lucid-datatable-page-description" style={{ textAlign: "center" }}>
-                            {createPaginatorDescription()}
-                        </span>
-                    </div>
+                    {props.rows &&
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            <Paginator
+                                numPages={numPages.current}
+                                currentPage={currentPage}
+                                onPrevPage={goPrevPage}
+                                onNextPage={goNextPage}
+                                goFirstPage={goFirstPage}
+                                goLastPage={goLastPage}
+                                setPage={setPage}
+                            ></Paginator>
+                            <span className="lucid-datatable-page-description" style={{ textAlign: "center" }}>
+                                {createPaginatorDescription()}
+                            </span>
+                        </div>
+                    }
                 </DataTableFooter>
             </div>
         </>
