@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
+import React, { CSSProperties, MouseEventHandler, ReactElement, useRef } from "react";
 import { DataTableCellClickHandler, DataTableRowClickHandler, SelectionMode } from "../../types/data-table";
 import DataTableCell from "./data-table-cell";
 import { DataTableColumnProps } from "./data-table-column";
@@ -16,7 +16,7 @@ type DataTableBodyRowProps<D> = {
     onRowClick?: DataTableRowClickHandler<D>
 };
 
-function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRowProps<D>) {
+const DataTableBodyRow = React.memo(<D extends Record<string, any>>(props: DataTableBodyRowProps<D>) => {
 
     const rowElementRef = useRef(null);
 
@@ -80,6 +80,6 @@ function DataTableBodyRow<D extends Record<string, any>>(props: DataTableBodyRow
             {createContent()}
         </tr>
     );
-}
+});
 
 export default DataTableBodyRow;

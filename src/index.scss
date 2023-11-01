@@ -22,7 +22,7 @@ body {
   font-size: 1.4rem;
 
   @apply text-zinc-950;
-  @apply bg-zinc-800;
+  // @apply bg-zinc-800;
 }
 
 h1 {
@@ -39,7 +39,8 @@ div.lucid-datatable {
   * {
     @apply transition duration-[0.01s];
   }
-  @apply border border-zinc-400;
+  @apply border border-zinc-200;
+  @apply rounded;
 
   div.lucid-datatable-controls {
     // @apply bg-zinc-200;

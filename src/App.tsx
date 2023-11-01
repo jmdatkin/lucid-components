@@ -9,6 +9,7 @@ import IconButton from './components/icon-button'
 import Badge from './components/badge'
 import { Severity } from './types/severity'
 import { FiTrash } from 'react-icons/fi'
+import Blueprint from './components/blueprint'
 
 function App() {
 
@@ -53,34 +54,36 @@ function App() {
 
   return (
     <div className="App">
-      <DataTable
-        data={data}
-        // width={800}
-        scrollable
-        scrollHeight={800}
-        // rows={15}
-        filters={filters.current}
-        selection={selection}
-        onSelectionChange={(e) => setSelection(e.selection)}
-        onCellClick={(e) => console.log(e)}
-        selectionMode={SelectionMode.MULTIPLE}
-        render_controls={() => {
-          return (
-            <div style={{display: 'flex'}}>
-              <IconButton onClick={() => deleteRecords(selection)}><FiTrash></FiTrash></IconButton>
-            </div>
-          )
-        }}
-      >
-        <DataTableColumn selectionColumn style={{ width: '4rem', textAlign: 'center'}} />
-        <DataTableColumn header="id" field="autoincrement" style={{ width: '4rem' }} />
-        <DataTableColumn header="First Name" field="firstName" style={{ minWidth: '10rem' }} />
-        <DataTableColumn header="Last Name" field="lastName" style={{ minWidth: '10rem' }} />
-        <DataTableColumn header="Phone" field="phone" style={{ minWidth: '16rem' }} />
-        <DataTableColumn header="E-mail" field="email" style={{ minWidth: '20rem' }} />
-        <DataTableColumn header="Address" field="address" style={{ minWidth: '16rem' }} />
-        <DataTableColumn header="Postal Code" field="postalZip" style={{ minWidth: '8rem' }} />
-        {/* <DataTableColumn header="Farm" field="ownsFarm" style={{ minWidth: '4rem' }}
+      <Blueprint>
+        <h1 className="font-bold tracking-tight p-4 mb-6">DataTable</h1>
+        <DataTable
+          data={data}
+          // width={800}
+          scrollable
+          scrollHeight={800}
+          rows={15}
+          filters={filters.current}
+          selection={selection}
+          onSelectionChange={(e) => setSelection(e.selection)}
+          onCellClick={(e) => console.log(e)}
+          selectionMode={SelectionMode.MULTIPLE}
+          render_controls={() => {
+            return (
+              <div style={{ display: 'flex' }}>
+                <IconButton onClick={() => deleteRecords(selection)}><FiTrash></FiTrash></IconButton>
+              </div>
+            )
+          }}
+        >
+          <DataTableColumn selectionColumn style={{ width: '4rem', textAlign: 'center' }} />
+          <DataTableColumn header="id" field="autoincrement" style={{ width: '4rem' }} />
+          <DataTableColumn header="First Name" field="firstName" style={{ minWidth: '10rem' }} />
+          <DataTableColumn header="Last Name" field="lastName" style={{ minWidth: '10rem' }} />
+          <DataTableColumn header="Phone" field="phone" style={{ minWidth: '16rem' }} />
+          <DataTableColumn header="E-mail" field="email" style={{ minWidth: '20rem' }} />
+          <DataTableColumn header="Address" field="address" style={{ minWidth: '16rem' }} />
+          <DataTableColumn header="Postal Code" field="postalZip" style={{ minWidth: '8rem' }} />
+          {/* <DataTableColumn header="Farm" field="ownsFarm" style={{ minWidth: '4rem' }}
           renderContent={(rowData) => {
             if (parseInt(rowData.ownsFarm) === 0) {
               return <Badge label="No" severity={Severity.ALERT}></Badge>
@@ -89,7 +92,9 @@ function App() {
             }
           }}
         /> */}
-      </DataTable>
+        </DataTable>
+
+      </Blueprint>
     </div>
   )
 }

@@ -69,11 +69,6 @@ function DataTable<D extends Record<string, any>>(props: DataTableProps<D>) {
 
     const getColumns = () => {
         const columns = React.Children.toArray(props.children) as ReactElement<DataTableColumnProps>[];
-
-        // if (!columns) {
-        //     return null;
-        // }
-
         return columns;
     };
 
